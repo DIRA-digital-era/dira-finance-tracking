@@ -16,11 +16,11 @@ export default function Login() {
   async function handleLogin(formData: FormData) {
     setLoading(true);
     const res = await loginAction(formData);
-    
+
     if (res.success) {
       playSuccessSound();
       toast.success(res.message);
-      
+
       if (res.role === 'ADMIN' || res.role === 'SUPER_ADMIN') {
         router.push('/dashboard'); // Both go to dashboard for now
       } else {
@@ -35,19 +35,20 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4 relative overflow-hidden bg-[var(--color-background)]">
-      
+
       {/* Background Tech Details */}
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, var(--color-primary) 0%, transparent 40%)' }} />
       <div className="absolute top-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-20" />
 
       <div className="relative z-10 w-full max-w-md rounded-xl bg-[var(--color-card)] p-8 border border-[var(--color-border)] shadow-2xl backdrop-blur-sm">
-        
+
         <div className="mb-8 flex flex-col items-center">
-            {/* We use logo.ico or logo.jpg from public */}
-             <div className="relative w-16 h-16 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)] shadow-[0_0_15px_rgba(0,255,204,0.3)]">
-                 <Image src="/Innovative Logo DIRA – Digital Era.jpg" fill alt="DIRA Logo" className="object-cover" />
-             </div>
-             
+          {/* We use logo.ico or logo.jpg from public */}
+          <div className="relative w-16 h-16 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)] shadow-[0_0_15px_rgba(0,255,204,0.3)]">
+            {/* <Image src="/logo.jpg" fill alt="DIRA Logo" sizes='30' className="object-cover" /> */}
+            <img src="/logo.jpg" alt="dira logo" />
+          </div>
+
           <h1 className="text-2xl font-bold tracking-wider text-[var(--color-primary)]">DIRA FINANCIALS</h1>
           <p className="mt-2 text-sm text-[var(--color-foreground)] opacity-70">AUTHORIZED PERSONNEL ONLY</p>
         </div>
@@ -88,11 +89,11 @@ export default function Login() {
             <ArrowRight className="absolute right-4 h-5 w-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
           </button>
         </form>
-        
+
         <div className="mt-6 border-t border-[var(--color-border)] pt-4 text-center">
-             <p className="text-xs text-justify text-gray-500">
-               WARNING: This system is property of DIRA Tech. Unauthorized access is strictly prohibited and logged. By proceeding you agree to the organizational code of conduct.
-             </p>
+          <p className="text-xs text-justify text-gray-500">
+            WARNING: This system is property of DIRA Tech. Unauthorized access is strictly prohibited and logged. By proceeding you agree to the organizational code of conduct.
+          </p>
         </div>
       </div>
     </div>

@@ -88,6 +88,18 @@ export async function toggleUserStatus(id: number, currentStatus: string) {
   const session = await getSession();
   if (!session || (session.role !== 'SUPER_ADMIN' && session.role !== 'ADMIN')) return { success: false, message: 'Unauthorized.' };
 
+  // Check target user role — only SUPER_ADMIN can suspend/modify ADMINs
+  try {
+     const targetRes = await query('SELECT role FROM users WHERE id = $1', [id]);
+     if (targetRes.rowCount === 0) return { success: false, message: 'User not found.' };
+     const targetRole = targetRes.rows[0].role;
+     if ((targetRole === 'ADMIN' || targetRole === 'SUPER_ADMIN') && session.role !== 'SUPER_ADMIN') {
+        return { success: false, message: 'Only a Director (Level 3) can suspend or modify Admin-level accounts.' };
+     }
+  } catch(e) {
+     return { success: false, message: 'Failed to validate target role.' };
+  }
+
   const targetStatus = currentStatus === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
 
   try {
@@ -107,6 +119,18 @@ export async function toggleUserStatus(id: number, currentStatus: string) {
 export async function deleteUserAction(id: number) {
   const session = await getSession();
   if (!session || (session.role !== 'SUPER_ADMIN' && session.role !== 'ADMIN')) return { success: false, message: 'Unauthorized.' };
+
+  // Only SUPER_ADMIN can delete ADMINs
+  try {
+     const targetRes = await query('SELECT role FROM users WHERE id = $1', [id]);
+     if (targetRes.rowCount === 0) return { success: false, message: 'User not found.' };
+     const targetRole = targetRes.rows[0].role;
+     if ((targetRole === 'ADMIN' || targetRole === 'SUPER_ADMIN') && session.role !== 'SUPER_ADMIN') {
+        return { success: false, message: 'Only a Director (Level 3) can delete Admin-level accounts.' };
+     }
+  } catch(e) {
+     return { success: false, message: 'Failed to validate target role.' };
+  }
 
   try {
      const dbRes = await query(`UPDATE users SET status = 'DELETED' WHERE id = $1`, [id]);

@@ -114,16 +114,32 @@ export default function PersonnelClientTable({ users, jobTitles, currentRole }: 
                                          {tab === 'ACTIVE' ? (
                                            <>
                                              <EditUserForm user={u} currentRole={currentRole} jobTitles={jobTitles} />
-                                             <button onClick={() => handleToggleStatus(u.id, u.status)} className="px-3 py-1 rounded bg-[var(--color-input)] hover:text-white transition hidden md:inline-block">
-                                                 {u.status === 'ACTIVE' ? 'Suspend' : 'Reactivate'}
-                                             </button>
-                                             <button onClick={() => handleDelete(u.id)} className="px-3 py-1 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition">
-                                                 Delete
-                                             </button>
+                                             {/* Only SUPER_ADMIN can suspend/delete other ADMINs */}
+                                             {(u.role !== 'ADMIN' && u.role !== 'SUPER_ADMIN') || currentRole === 'SUPER_ADMIN' ? (
+                                               <>
+                                                 <button
+                                                   onClick={() => handleToggleStatus(u.id, u.status)}
+                                                   className="px-3 py-1 rounded bg-[var(--color-input)] hover:text-white transition hidden md:inline-block"
+                                                 >
+                                                   {u.status === 'ACTIVE' ? 'Suspend' : 'Reactivate'}
+                                                 </button>
+                                                 <button
+                                                   onClick={() => handleDelete(u.id)}
+                                                   className="px-3 py-1 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition"
+                                                 >
+                                                   Delete
+                                                 </button>
+                                               </>
+                                             ) : (
+                                               <span className="text-[9px] text-gray-600 italic hidden md:inline">L3 access required</span>
+                                             )}
                                            </>
                                          ) : (
-                                           <button onClick={() => handleReinstate(u.id)} className="px-3 py-1 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-foreground)] transition font-bold tracking-widest">
-                                               REINSTATE
+                                           <button
+                                             onClick={() => handleReinstate(u.id)}
+                                             className="px-3 py-1 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-foreground)] transition font-bold tracking-widest"
+                                           >
+                                             REINSTATE
                                            </button>
                                          )}
                                      </div>
