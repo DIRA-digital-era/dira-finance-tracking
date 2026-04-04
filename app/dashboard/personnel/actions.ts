@@ -4,17 +4,19 @@ import { getSession } from '@/lib/auth';
 import { query } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import bcrypt from 'bcryptjs';
+import { createLog, createNotification } from '@/lib/logs';
 
 export async function createUserAction(formData: FormData) {
   const session = await getSession();
   if (!session || (session.role !== 'SUPER_ADMIN' && session.role !== 'ADMIN')) {
-      return { success: false, message: 'Unauthorized configuration attempt.' };
+      return { success: false, message: 'Unauthorized.' };
   }
 
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   const roleVal = formData.get('role') as string;
+  const titleIds = formData.getAll('titles') as string[];
   
   if (roleVal === 'SUPER_ADMIN' && session.role !== 'SUPER_ADMIN') {
       return { success: false, message: 'Only SUPER_ADMIN can create another SUPER_ADMIN.' };
@@ -23,21 +25,30 @@ export async function createUserAction(formData: FormData) {
   try {
      const check = await query('SELECT id FROM users WHERE email = $1', [email]);
      if (check.rowCount && check.rowCount > 0) {
-        return { success: false, message: 'Operative ID (email) already exists in network.' };
+        return { success: false, message: 'Employee ID (email) already exists.' };
      }
 
      const hash = await bcrypt.hash(password, 10);
      const lvl = roleVal === 'SUPER_ADMIN' ? 3 : (roleVal === 'ADMIN' ? 2 : 1);
 
-     await query(`
+     const insertRes = await query(`
         INSERT INTO users (name, email, password_hash, role, clearance_level) 
-        VALUES ($1, $2, $3, $4, $5)
+        VALUES ($1, $2, $3, $4, $5) RETURNING id
      `, [name, email, hash, roleVal, lvl]);
 
+     const newUserId = insertRes.rows[0].id;
+
+     // Insert multiple titles
+     for (const titleId of titleIds) {
+         await query('INSERT INTO user_titles (user_id, title_id) VALUES ($1, $2)', [newUserId, parseInt(titleId)]);
+     }
+
+     await createLog(session.user_id, 'CREATED_USER', `Registered employee: ${name} (${roleVal})`);
+
      revalidatePath('/dashboard/personnel');
-     return { success: true, message: 'Operative profile registered and activated.' };
+     return { success: true, message: 'Employee profile activated.' };
   } catch(e) {
-     return { success: false, message: 'System error during registration sequence.' };
+     return { success: false, message: 'System error during registration.' };
   }
 }
 
@@ -51,11 +62,29 @@ export async function toggleUserStatus(id: number, currentStatus: string) {
      const dbRes = await query('UPDATE users SET status = $1 WHERE id = $2 RETURNING email', [targetStatus, id]);
      if (dbRes.rowCount === 0) return { success: false, message: 'User not found.' };
 
-     // Block supers from suspending supers unless they are a super
+     await createLog(session.user_id, targetStatus === 'SUSPENDED' ? 'SUSPENDED_USER' : 'REACTIVATED_USER', `Status for User ID #${id} changed to ${targetStatus}`, id);
+     await createNotification(id, 'Account Status Changed', `Your account has been ${targetStatus.toLowerCase()} by an administrator.`);
      
      revalidatePath('/dashboard/personnel');
-     return { success: true, message: `Operative status changed to ${targetStatus}` };
+     return { success: true, message: `Status changed to ${targetStatus}` };
   } catch(e) {
      return { success: false, message: 'Failed to update status.' };
+  }
+}
+
+export async function deleteUserAction(id: number) {
+  const session = await getSession();
+  if (!session || (session.role !== 'SUPER_ADMIN' && session.role !== 'ADMIN')) return { success: false, message: 'Unauthorized.' };
+
+  try {
+     const dbRes = await query(`UPDATE users SET status = 'DELETED' WHERE id = $1`, [id]);
+     if (dbRes.rowCount === 0) return { success: false, message: 'User not found.' };
+
+     await createLog(session.user_id, 'DELETED_USER', `Account User ID #${id} was marked as deleted (Soft Delete)`, id);
+     
+     revalidatePath('/dashboard/personnel');
+     return { success: true, message: `Employee marked as past/deleted.` };
+  } catch(e) {
+     return { success: false, message: 'Failed to delete.' };
   }
 }

@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Receipt, Users, Settings, LogOut, Wallet } from 'lucide-react';
+import { LayoutDashboard, Receipt, Users, Settings, LogOut, Wallet, UserCircle } from 'lucide-react';
 
 export default function MainNav({ role, mobile = false }: { role: string, mobile?: boolean }) {
   const pathname = usePathname();
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Profile', href: '/dashboard/profile', icon: UserCircle },
     { name: 'My Requests', href: '/dashboard/my-requests', icon: Receipt },
   ];
 

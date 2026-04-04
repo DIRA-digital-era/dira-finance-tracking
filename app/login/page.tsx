@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
 import { User, Lock, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import { PasswordEyeToggle } from '@/components/PasswordEyeToggle';
 
 export default function Login() {
   const router = useRouter();
@@ -68,17 +69,10 @@ export default function Login() {
             </div>
 
             <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex flex-col justify-center pl-3 z-10 h-[48px]">
                 <Lock className="h-5 w-5 text-gray-400" />
               </div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-input)] py-3 pl-10 pr-3 text-white placeholder-gray-400 focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
-                placeholder="Security Key (Password)"
-              />
+              <PasswordEyeToggle />
             </div>
           </div>
 

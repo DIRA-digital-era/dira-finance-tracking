@@ -1,7 +1,8 @@
 'use client';
 
-import { Bell, UserCircle } from 'lucide-react';
+import { UserCircle } from 'lucide-react';
 import Image from 'next/image';
+import NotificationsDropdown from './NotificationsDropdown';
 
 export default function TopBar({ user }: { user: any }) {
   return (
@@ -23,10 +24,7 @@ export default function TopBar({ user }: { user: any }) {
                </div>
            </div>
            
-           <button className="text-gray-400 hover:text-[var(--color-primary)] transition-colors relative">
-               <Bell className="w-5 h-5" />
-               <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-[var(--color-background)]"></span>
-           </button>
+           <NotificationsDropdown />
            
            <div className="flex items-center gap-3">
                <div className="text-right hidden md:block">

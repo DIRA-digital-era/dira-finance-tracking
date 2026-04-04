@@ -13,14 +13,21 @@ export default async function DashboardOverview() {
   const totalSpentRes = await query(`SELECT SUM(amount) as total FROM records WHERE user_id = $1 AND type = 'EXPENSE'`, [session.user_id]);
   const totalSpent = totalSpentRes.rows[0].total || 0;
 
-  // Mock chart data representing recent 30 days
-  const chartData = [
-     { name: 'Day 01', value: 250 },
-     { name: 'Day 07', value: 800 },
-     { name: 'Day 15', value: 300 },
-     { name: 'Day 22', value: 1400 },
-     { name: 'Day 30', value: 50 },
-  ];
+  const chartQuery = await query(`
+      SELECT to_char(created_at, 'DD Mon') as name, SUM(amount) as value 
+      FROM records 
+      WHERE user_id = $1 AND type = 'EXPENSE' AND created_at > current_date - interval '30 days'
+      GROUP BY to_char(created_at, 'DD Mon'), created_at::date
+      ORDER BY created_at::date ASC
+  `, [session.user_id]);
+
+  let chartData = chartQuery.rows.map((r: any) => ({ name: r.name, value: parseFloat(r.value) }));
+  if (chartData.length === 0) {
+      chartData = [{ name: 'No recent data', value: 0 }];
+  }
+
+  const titlesRes = await query('SELECT jt.title FROM user_titles ut JOIN job_titles jt ON ut.title_id = jt.id WHERE ut.user_id = $1', [session.user_id]);
+  const titles = titlesRes.rows.map((r: any) => r.title);
 
   return (
     <div className="space-y-6">
@@ -38,9 +45,13 @@ export default async function DashboardOverview() {
              </div>
              <p className="text-[10px] text-gray-400 tracking-widest flex justify-between uppercase relative z-10">Employee Identity <span className="bg-[var(--color-accent)]/20 text-[var(--color-accent)] px-1 rounded">LVL {session?.role === 'SUPER_ADMIN' ? 'MAX' : (session?.role === 'ADMIN' ? '2' : '1')}</span></p>
              <h3 className="text-xl font-bold mt-2 text-white relative z-10">{session.name}</h3>
-             <div className="mt-4 space-y-2 text-sm text-gray-400 relative z-10">
-                <p className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[var(--color-primary)]"></span> Active Clearance Status</p>
-                <p className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[var(--color-primary)]"></span> Sector 7-G Node Access</p>
+             <p className="text-xs text-[var(--color-primary)] relative z-10 mb-4">{session.role}</p>
+             
+             <div className="flex flex-wrap gap-1 relative z-10">
+                 {titles.length === 0 && <span className="text-[9px] text-gray-500 italic">No generic titles assigned</span>}
+                 {titles.map((t: string, i: number) => (
+                    <span key={i} className="text-[9px] bg-[var(--color-input)]/80 text-gray-300 px-2 py-1 border border-[var(--color-border)] rounded">{t}</span>
+                 ))}
              </div>
           </div>
           
@@ -52,9 +63,6 @@ export default async function DashboardOverview() {
              <div className="mt-4">
                  <p className="text-4xl font-mono font-bold text-white tracking-widest">{parseFloat(totalSpent).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
                  <p className="text-xs text-gray-500 mt-1">Total recorded outgoing capital</p>
-             </div>
-             <div className="w-full bg-[var(--color-input)] rounded-full h-1 mt-6 overflow-hidden">
-                <div className="bg-[var(--color-primary)] h-1 rounded-full" style={{ width: '45%' }}></div>
              </div>
           </div>
           
@@ -73,7 +81,7 @@ export default async function DashboardOverview() {
        </div>
        
        <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg">
-           <p className="text-[10px] text-gray-400 tracking-widest mb-4 uppercase">Expenditure Velocity (30D)</p>
+           <p className="text-[10px] text-gray-400 tracking-widest mb-4 uppercase">Actual Expenditure Velocity (30D)</p>
            <ChartWrapper data={chartData} />
        </div>
 
