@@ -97,15 +97,21 @@ export default function NewRequestPage() {
               </div>
 
               {files.length > 0 && (
-                <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {files.map((f, i) => (
-                    <div key={i} className="relative group rounded border border-[var(--color-primary)] overflow-hidden bg-[var(--color-background)] aspect-square flex items-center justify-center">
-                       <p className="text-[10px] text-center p-2 break-all text-gray-300 pointer-events-none">{f.name}</p>
-                       <button type="button" onClick={() => removeFile(i)} className="absolute top-1 right-1 bg-red-500 rounded text-white p-1 opacity-80 hover:opacity-100">
-                          <X className="w-3 h-3" />
-                       </button>
-                    </div>
-                  ))}
+                <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {files.map((f, i) => {
+                    const url = URL.createObjectURL(f);
+                    return (
+                      <div key={i} className="relative group rounded-lg border border-[var(--color-primary)]/40 overflow-hidden bg-[var(--color-background)] aspect-square">
+                         <img src={url} alt={f.name} className="w-full h-full object-cover" />
+                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                           <p className="text-[9px] text-white text-center px-1 break-all">{f.name}</p>
+                         </div>
+                         <button type="button" onClick={() => removeFile(i)} className="absolute top-1 right-1 bg-red-500 rounded-full text-white p-0.5 hover:bg-red-600 transition">
+                            <X className="w-3 h-3" />
+                         </button>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

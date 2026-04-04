@@ -1,19 +1,26 @@
 'use client';
 import { useState } from 'react';
 import AnimatedNumber from '@/components/AnimatedNumber';
+import { LayoutGrid, Table } from 'lucide-react';
+
+const STATUS_STYLES: Record<string, string> = {
+  APPROVED: 'bg-green-500/10 text-green-400 border border-green-500/20',
+  DENIED: 'bg-red-500/10 text-red-400 border border-red-500/20',
+  PENDING: 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
+};
 
 export default function LedgerClientTable({ records }: { records: any[] }) {
     const [search, setSearch] = useState('');
     const [typeFilter, setTypeFilter] = useState('ALL');
     const [statusFilter, setStatusFilter] = useState('ALL');
+    const [view, setView] = useState<'table' | 'cards'>('table');
 
     const filtered = records.filter((r) => {
         if (typeFilter !== 'ALL' && r.type !== typeFilter) return false;
         if (statusFilter !== 'ALL' && r.status !== statusFilter) return false;
-        
         if (search) {
              const low = search.toLowerCase();
-             return (r.title && r.title.toLowerCase().includes(low)) || 
+             return (r.title && r.title.toLowerCase().includes(low)) ||
                     (r.user_name && r.user_name.toLowerCase().includes(low)) ||
                     (r.amount && r.amount.toString().includes(low));
         }
@@ -30,8 +37,20 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
     };
     const totals = calculateTotals();
 
+    const ViewToggle = () => (
+      <div className="flex bg-[var(--color-input)] p-1 rounded-lg shrink-0">
+        <button onClick={() => setView('table')} className={`px-3 py-1 rounded text-[10px] font-bold tracking-widest transition flex items-center gap-1 ${view === 'table' ? 'bg-[var(--color-primary)] text-[var(--color-primary-foreground)]' : 'text-gray-400 hover:text-white'}`}>
+          <Table className="w-3 h-3" /> Table
+        </button>
+        <button onClick={() => setView('cards')} className={`px-3 py-1 rounded text-[10px] font-bold tracking-widest transition flex items-center gap-1 ${view === 'cards' ? 'bg-[var(--color-primary)] text-[var(--color-primary-foreground)]' : 'text-gray-400 hover:text-white'}`}>
+          <LayoutGrid className="w-3 h-3" /> Cards
+        </button>
+      </div>
+    );
+
     return (
         <div className="space-y-6">
+           {/* Summary Cards */}
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-[var(--color-card)] p-6 rounded-xl border border-[var(--color-border)] shadow-lg">
                  <p className="text-[10px] text-gray-400 tracking-widest uppercase">Filtered Total Income</p>
@@ -51,10 +70,11 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
               </div>
            </div>
 
-           <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] shadow-lg overflow-hidden flex flex-col">
-               <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-background)]/50 flex flex-col md:flex-row justify-between items-center gap-4">
-                   <p className="text-xs font-bold tracking-widest uppercase text-[var(--color-primary)]">Filtered Transaction Logs</p>
-                   <div className="flex gap-2 w-full md:w-auto">
+           {/* Filters + View Toggle */}
+           <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] shadow-lg overflow-hidden">
+               <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-background)]/50 flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
+                   <p className="text-xs font-bold tracking-widest uppercase text-[var(--color-primary)] shrink-0">Transaction Logs</p>
+                   <div className="flex flex-wrap gap-2 w-full md:w-auto">
                       <select value={typeFilter} onChange={e=>setTypeFilter(e.target.value)} className="bg-[var(--color-input)] border border-[var(--color-border)] text-[10px] uppercase text-white px-3 py-2 rounded focus:outline-none">
                           <option value="ALL">All Types</option>
                           <option value="EXPENSE">Expense</option>
@@ -66,56 +86,74 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
                           <option value="PENDING">Pending</option>
                           <option value="DENIED">Denied</option>
                       </select>
-                      <input type="text" placeholder="Search title, name, amount..." value={search} onChange={e=>setSearch(e.target.value)} className="w-full md:w-64 bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-2 text-xs text-white rounded focus:outline-none" />
+                      <input type="text" placeholder="Search title, name..." value={search} onChange={e=>setSearch(e.target.value)} className="flex-1 min-w-[140px] md:w-48 bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-2 text-xs text-white rounded focus:outline-none" />
+                      <ViewToggle />
                    </div>
                </div>
-               <div className="overflow-x-auto flex-1 h-[600px] overflow-y-auto w-full relative">
-                   <table className="w-full text-left text-sm text-gray-300 relative">
-                      <thead className="text-[10px] uppercase bg-[var(--color-input)] text-gray-500 sticky top-0 z-10 shadow shadow-black">
+
+               {/* Card View */}
+               {view === 'cards' ? (
+                 <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto">
+                   {filtered.length === 0 ? (
+                     <p className="text-gray-500 text-sm col-span-full text-center py-8">No records found.</p>
+                   ) : filtered.map((r) => (
+                     <div key={r.id} className="bg-[var(--color-input)]/40 border border-[var(--color-border)] rounded-xl p-4 hover:border-[var(--color-primary)]/40 transition-colors">
+                       <div className="flex justify-between items-start mb-2">
+                         <span className={`text-[9px] font-bold tracking-widest px-2 py-0.5 rounded ${r.type === 'INCOME' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>{r.type}</span>
+                         <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${STATUS_STYLES[r.status] || STATUS_STYLES.PENDING}`}>{r.status}</span>
+                       </div>
+                       <p className="font-bold text-white text-sm mb-1 truncate">{r.title}</p>
+                       {r.user_name && r.type === 'EXPENSE' && <p className="text-[10px] text-[var(--color-primary)] font-mono truncate">{r.user_name}</p>}
+                       <p className="text-sm font-mono font-bold mt-2 text-white">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0})} XAF</p>
+                       <p className="text-[9px] text-gray-500 font-mono mt-2">{new Date(r.created_at).toLocaleString()}</p>
+                     </div>
+                   ))}
+                 </div>
+               ) : (
+               /* Table View */
+               <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+                   <table className="w-full text-left text-sm text-gray-300">
+                      <thead className="text-[10px] uppercase bg-[var(--color-input)] text-gray-500 sticky top-0 z-10">
                          <tr>
-                            <th className="px-6 py-4 font-medium tracking-wider">Transaction ID</th>
-                            <th className="px-6 py-4 font-medium tracking-wider">Type</th>
+                            <th className="px-6 py-4 font-medium tracking-wider">ID</th>
+                            <th className="px-4 py-4 font-medium tracking-wider">Type</th>
                             <th className="px-6 py-4 font-medium tracking-wider">Request / Source</th>
-                            <th className="px-4 py-4 font-medium tracking-wider">Employee</th>
-                            <th className="px-6 py-4 font-medium tracking-wider">Timestamp</th>
+                            <th className="px-4 py-4 font-medium tracking-wider hidden md:table-cell">Employee</th>
+                            <th className="px-6 py-4 font-medium tracking-wider hidden lg:table-cell">Time</th>
                             <th className="px-6 py-4 font-medium tracking-wider">Amount</th>
                             <th className="px-6 py-4 font-medium tracking-wider">Status</th>
                          </tr>
                       </thead>
-                      <tbody className="divide-y divide-[var(--color-border)] bg-[var(--color-card)] relative z-0">
+                      <tbody className="divide-y divide-[var(--color-border)]">
                          {filtered.length === 0 ? (
                            <tr><td colSpan={7} className="px-6 py-8 text-center text-gray-500">No records found.</td></tr>
                          ) : (
                            filtered.map((r) => (
                               <tr key={r.id} className="hover:bg-[var(--color-input)]/20 transition-colors">
-                                 <td className="px-6 py-4 font-mono text-[10px]">#TRX-{2000 + r.id}</td>
-                                 <td className="px-6 py-4">
-                                     <span className={`text-[10px] font-bold tracking-widest px-2 py-0.5 rounded ${r.type === 'INCOME' ? 'bg-[var(--color-success)]/10 text-[var(--color-success)]' : 'bg-[var(--color-danger)]/10 text-[var(--color-danger)]'}`}>
+                                 <td className="px-6 py-4 font-mono text-[10px] text-gray-500">#TRX-{2000 + r.id}</td>
+                                 <td className="px-4 py-4">
+                                     <span className={`text-[10px] font-bold tracking-widest px-2 py-0.5 rounded ${r.type === 'INCOME' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                                         {r.type}
                                      </span>
                                  </td>
                                  <td className="px-6 py-4 text-white font-medium">
                                      {r.title}
-                                     <span className="block text-[10px] text-gray-500 truncate mt-1 w-48">{r.description}</span>
+                                     <span className="block text-[10px] text-gray-500 truncate mt-1 max-w-[160px]">{r.description}</span>
                                  </td>
-                                 <td className="px-4 py-4">
+                                 <td className="px-4 py-4 hidden md:table-cell">
                                      {r.type === 'INCOME' ? (
-                                        <span className="text-[10px] text-gray-500 font-mono">- EXTERNAL SOURCE -</span>
+                                        <span className="text-[10px] text-gray-500 font-mono">External / Director</span>
                                      ) : (
                                         <div>
-                                           <span className="block font-bold text-gray-300">{r.user_name}</span>
+                                           <span className="block font-bold text-gray-300 text-xs">{r.user_name}</span>
                                            <span className="block text-[10px] text-[var(--color-primary)] font-mono">{r.user_email}</span>
                                         </div>
                                      )}
                                  </td>
-                                 <td className="px-6 py-4 text-[10px] text-gray-500 font-mono">{new Date(r.created_at).toLocaleString()}</td>
-                                 <td className="px-6 py-4 font-mono font-bold">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</td>
+                                 <td className="px-6 py-4 text-[10px] text-gray-500 font-mono hidden lg:table-cell">{new Date(r.created_at).toLocaleString()}</td>
+                                 <td className="px-6 py-4 font-mono font-bold">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0})} XAF</td>
                                  <td className="px-6 py-4">
-                                    <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${
-                                       r.status === 'APPROVED' ? 'bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20' : 
-                                       (r.status === 'DENIED' ? 'bg-[var(--color-danger)]/10 text-[var(--color-danger)] border border-[var(--color-danger)]/20' : 
-                                       'bg-[var(--color-accent)]/10 text-[var(--color-accent)] border border-[var(--color-accent)]/20')
-                                    }`}>{r.status}</span>
+                                    <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${STATUS_STYLES[r.status] || STATUS_STYLES.PENDING}`}>{r.status}</span>
                                  </td>
                               </tr>
                            ))
@@ -123,6 +161,7 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
                       </tbody>
                    </table>
                </div>
+               )}
            </div>
         </div>
     );

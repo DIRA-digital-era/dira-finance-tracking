@@ -20,7 +20,7 @@ export default async function LedgerPage() {
 
    return (
       <div className="space-y-6">
-         <div className="flex justify-between items-end">
+         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <div>
                <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">MASTER LEDGER</h2>
                <p className="text-sm text-gray-400 mt-1">Comprehensive overview of all organizational liquidity streams.</p>

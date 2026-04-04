@@ -1,7 +1,6 @@
 'use client';
 
 import { UserCircle } from 'lucide-react';
-import Image from 'next/image';
 import NotificationsDropdown from './NotificationsDropdown';
 
 export default function TopBar({ user, maxLimit }: { user: any, maxLimit: number }) {
@@ -9,8 +8,8 @@ export default function TopBar({ user, maxLimit }: { user: any, maxLimit: number
     <header className="h-16 px-4 md:px-8 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-background)] shrink-0 z-10 w-full relative">
        <div className="flex items-center gap-4">
            {/* Mobile Only Logo */}
-           <div className="md:hidden relative w-8 h-8 rounded-full overflow-hidden border border-[var(--color-primary)]">
-               <Image src="/Innovative Logo DIRA – Digital Era.jpg" fill alt="DIRA Logo" className="object-cover" />
+           <div className="md:hidden w-8 h-8 rounded-full overflow-hidden border border-[var(--color-primary)] bg-[var(--color-input)]">
+               <img src="/logo.jpg" alt="DIRA Logo" className="w-full h-full object-cover" />
            </div>
            <h1 className="text-[var(--color-primary)] font-semibold hidden md:block">DASHBOARD</h1>
        </div>

@@ -6,7 +6,6 @@ import { loginAction } from './actions';
 import { toast } from 'sonner';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
 import { User, Lock, ArrowRight } from 'lucide-react';
-import Image from 'next/image';
 import { PasswordEyeToggle } from '@/components/PasswordEyeToggle';
 
 export default function Login() {
@@ -43,10 +42,8 @@ export default function Login() {
       <div className="relative z-10 w-full max-w-md rounded-xl bg-[var(--color-card)] p-8 border border-[var(--color-border)] shadow-2xl backdrop-blur-sm">
 
         <div className="mb-8 flex flex-col items-center">
-          {/* We use logo.ico or logo.jpg from public */}
-          <div className="relative w-16 h-16 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)] shadow-[0_0_15px_rgba(0,255,204,0.3)]">
-            {/* <Image src="/logo.jpg" fill alt="DIRA Logo" sizes='30' className="object-cover" /> */}
-            <img src="/logo.jpg" alt="dira logo" />
+          <div className="relative w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)] shadow-[0_0_20px_rgba(0,229,255,0.3)] bg-[var(--color-input)] flex items-center justify-center">
+            <img src="/logo.jpg" alt="DIRA Logo" className="w-full h-full object-cover" />
           </div>
 
           <h1 className="text-2xl font-bold tracking-wider text-[var(--color-primary)]">DIRA FINANCIALS</h1>

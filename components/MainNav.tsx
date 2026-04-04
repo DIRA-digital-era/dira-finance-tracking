@@ -26,9 +26,16 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
     <nav className={`flex ${mobile ? 'flex-row w-full h-full pb-safe' : 'flex-col h-full p-4'}`}>
       {!mobile && (
         <div className="mb-10 px-2 py-4 border-b border-[var(--color-border)]">
-          <h2 className="text-xl font-bold tracking-widest text-[var(--color-primary)]">DIRA</h2>
-          <p className="text-xs text-gray-500 uppercase">INTERNAL LEDGER</p>
-          <div className="mt-4 text-xs bg-[var(--color-primary)]/10 text-[var(--color-primary)] w-fit px-2 py-1 rounded">CLEARANCE: {role}</div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-full overflow-hidden border border-[var(--color-primary)] bg-[var(--color-input)] shrink-0">
+              <img src="/logo.jpg" alt="DIRA Logo" className="w-full h-full object-cover" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold tracking-widest text-[var(--color-primary)]">DIRA</h2>
+              <p className="text-[10px] text-gray-500 uppercase leading-none">INTERNAL LEDGER</p>
+            </div>
+          </div>
+          <div className="text-xs bg-[var(--color-primary)]/10 text-[var(--color-primary)] w-fit px-2 py-1 rounded">CLEARANCE: {role}</div>
         </div>
       )}
 
@@ -37,10 +44,10 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
           const isActive = pathname === item.href;
           return (
             <li key={item.name} className={mobile ? 'h-full flex-1' : ''}>
-              <Link 
+              <Link
                 href={item.href}
                 className={`flex h-full ${mobile ? 'flex-col justify-center items-center text-center' : 'items-center px-4 py-3'} transition-colors group ${
-                  isActive 
+                  isActive
                     ? (mobile ? 'text-[var(--color-primary)] relative' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg border-l-4 border-[var(--color-primary)]')
                     : 'text-gray-400 hover:text-[var(--color-foreground)] hover:bg-[var(--color-card)] rounded-lg'
                 }`}
