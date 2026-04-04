@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth';
 import { query } from '@/lib/db';
 import { redirect } from 'next/navigation';
-import { AddJobTitleForm, UpdateLimitForm } from './ClientForms';
+import { AddJobTitleForm, UpdateLimitForm, UpdateLimitPeriodForm } from './ClientForms';
 
 export default async function ConfigPage() {
    const session = await getSession();
@@ -37,6 +37,9 @@ export default async function ConfigPage() {
                          <UpdateLimitForm configKey="max_request_level_1" label="Level 1 Limit (Employee)" currentValue={getConfig('max_request_level_1')} />
                          <UpdateLimitForm configKey="max_request_level_2" label="Level 2 Limit (Admin)" currentValue={getConfig('max_request_level_2')} />
                          <UpdateLimitForm configKey="max_request_level_3" label="Level 3 Limit (Director)" currentValue={getConfig('max_request_level_3')} />
+                         <div className="pt-4 border-t border-[var(--color-border)]">
+                             <UpdateLimitPeriodForm currentValue={getConfig('limit_period')} />
+                         </div>
                      </div>
                  </div>
 

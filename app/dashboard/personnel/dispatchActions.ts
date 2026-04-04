@@ -16,18 +16,25 @@ export async function dispatchFundsAction(formData: FormData) {
   const note = formData.get('note') as string;
 
   if (!targetUserId || isNaN(amount) || amount <= 0) {
-    return { success: false, message: 'Invalid target or amount.' };
+    return { success: false, message: 'Invalid recipient or amount.' };
   }
 
   try {
     const targetRes = await query('SELECT id, name FROM users WHERE id = $1 AND status = $2', [targetUserId, 'ACTIVE']);
-    if (targetRes.rowCount === 0) return { success: false, message: 'Target employee not found or inactive.' };
+    if (targetRes.rowCount === 0) return { success: false, message: 'Recipient not found or inactive.' };
     const target = targetRes.rows[0];
 
-    // Record the dispatch as INCOME on the ledger attributed to the director's action
+    // Type = DISPATCH: Director-allocated budget for employee, auto-APPROVED.
+    // This is outgoing capital from the company (NOT income), shown separately in ledger.
     await query(
-      `INSERT INTO records (user_id, type, amount, title, description, status) VALUES ($1, 'INCOME', $2, $3, $4, 'APPROVED')`,
-      [targetUserId, amount, `Fund Dispatch to ${target.name}`, note || `Funds dispatched by Director ${session.name}`]
+      `INSERT INTO records (user_id, type, amount, title, description, status)
+       VALUES ($1, 'DISPATCH', $2, $3, $4, 'APPROVED')`,
+      [
+        targetUserId,
+        amount,
+        `Director Dispatch → ${target.name}`,
+        note || `Budget allocation by Director ${session.name}`
+      ]
     );
 
     await createLog(
@@ -39,8 +46,8 @@ export async function dispatchFundsAction(formData: FormData) {
 
     await createNotification(
       targetUserId,
-      'Funds Dispatched',
-      `You have received ${amount.toLocaleString('en-US', { minimumFractionDigits: 0 })} XAF dispatched by Director ${session.name}. Note: ${note || 'N/A'}`
+      '💰 Funds Dispatched to You',
+      `Director ${session.name} has allocated ${amount.toLocaleString('en-US', { minimumFractionDigits: 0 })} XAF to your budget. Note: ${note || 'N/A'}`
     );
 
     revalidatePath('/dashboard/ledger');

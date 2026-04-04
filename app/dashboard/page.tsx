@@ -12,9 +12,38 @@ export default async function DashboardOverview() {
   const res = await query('SELECT * FROM records WHERE user_id = $1 ORDER BY created_at DESC LIMIT 5', [session.user_id]);
   const records = res.rows;
 
-  // Only count actual expenses (not dispatched income) in the personal expenditure total
-  const totalSpentRes = await query(`SELECT SUM(amount) as total FROM records WHERE user_id = $1 AND type = 'EXPENSE'`, [session.user_id]);
+  // Global total spent
+  const totalSpentRes = await query(`SELECT SUM(amount) as total FROM records WHERE user_id = $1 AND type = 'EXPENSE' AND status != 'DENIED'`, [session.user_id]);
   const totalSpent = totalSpentRes.rows[0].total || 0;
+
+  // Get Config limit info
+  const configRes = await query('SELECT key, value FROM config');
+  const configs = Object.fromEntries(configRes.rows.map((r: any) => [r.key, JSON.parse(r.value)]));
+  
+  const limitPeriod = configs['limit_period'] || 'monthly';
+  const limitKey = 'max_request_level_' + (session.clearance_level || 1);
+  const baseLimit = parseFloat(configs[limitKey] || '500000');
+
+  // get date interval
+  const intervalStr = limitPeriod === 'weekly' ? "1 week" : "1 month";
+
+  // Expenditures in active period
+  const totalSpentPeriodRes = await query(`
+    SELECT COALESCE(SUM(amount), 0) as total FROM records 
+    WHERE user_id = $1 AND type = 'EXPENSE' AND status != 'DENIED' AND created_at > current_date - interval '${intervalStr}'
+  `, [session.user_id]);
+  const spentPeriod = parseFloat(totalSpentPeriodRes.rows[0].total) || 0;
+
+  // Dispatched funds in active period
+  const dispatchedPeriodRes = await query(`
+    SELECT COALESCE(SUM(amount), 0) as total FROM records 
+    WHERE user_id = $1 AND type = 'DISPATCH' AND created_at > current_date - interval '${intervalStr}'
+  `, [session.user_id]);
+  const dispatchedPeriod = parseFloat(dispatchedPeriodRes.rows[0].total) || 0;
+
+  const activeBudget = baseLimit + dispatchedPeriod;
+  const remainingBudget = Math.max(0, activeBudget - spentPeriod);
+  const percentageUsed = Math.min(100, (spentPeriod / activeBudget) * 100) || 0;
 
   // Chart: actual expense spend per day (30 days)
   const chartQuery = await query(`
@@ -70,16 +99,28 @@ export default async function DashboardOverview() {
              </div>
           </div>
           
-          <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg col-span-1 md:col-span-3 lg:col-span-1">
-             <p className="text-[10px] text-gray-400 tracking-widest uppercase">System Integrity & Alerts</p>
-             <div className="mt-4 space-y-4">
-                <div className="flex items-center gap-4 bg-[var(--color-primary)]/5 p-3 rounded-lg border border-[var(--color-primary)]/20">
-                   <ShieldAlert className="w-6 h-6 text-[var(--color-primary)]" />
-                   <div>
-                      <p className="text-sm font-bold text-white">Encryption Standard</p>
-                      <p className="text-[10px] text-gray-400 font-mono">AES-256 Active Status: Secure</p>
-                   </div>
-                </div>
+          <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg col-span-1 md:col-span-3 lg:col-span-1 flex flex-col justify-between relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                 <ShieldAlert className="w-24 h-24 text-[var(--color-primary)]" />
+             </div>
+             <div>
+                 <p className="text-[10px] text-[var(--color-primary)] font-bold tracking-widest flex items-center justify-between uppercase">
+                     Available Budget ({limitPeriod})
+                     <span className="text-[9px] bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-2 py-0.5 rounded border border-[var(--color-primary)]/20">Active</span>
+                 </p>
+                 <div className="mt-5">
+                     <p className="text-2xl font-mono font-bold text-white tracking-widest"><AnimatedNumber value={remainingBudget} /> XAF</p>
+                     <p className="text-[10px] text-gray-500 mt-1">of <span className="text-gray-300 font-mono">{activeBudget.toLocaleString('en-US')}</span> allocated limit</p>
+                 </div>
+             </div>
+                 <div className="mt-4">
+                     <div className="w-full bg-[var(--color-input)] rounded-full h-2 border border-[var(--color-border)]">
+                         <div className={`h-2 rounded-full transition-all duration-1000 ${percentageUsed > 90 ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : percentageUsed > 75 ? 'bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]' : 'bg-[var(--color-success)] shadow-[0_0_10px_rgba(16,185,129,0.5)]'}`} style={{ width: `${percentageUsed}%` }}></div>
+                     </div>
+                 <div className="flex justify-between items-center mt-2">
+                     <p className="text-[9px] text-gray-400 font-mono">{percentageUsed.toFixed(1)}% Used</p>
+                     {dispatchedPeriod > 0 && <p className="text-[9px] text-[var(--color-success)] font-mono">+{dispatchedPeriod.toLocaleString()} Dispatched</p>}
+                 </div>
              </div>
           </div>
        </div>

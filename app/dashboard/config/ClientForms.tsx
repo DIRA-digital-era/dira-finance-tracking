@@ -1,5 +1,5 @@
 'use client';
-import { addJobTitleAction, updateConfigLimitAction } from './actions';
+import { addJobTitleAction, updateConfigLimitAction, updateLimitPeriodAction } from './actions';
 import { toast } from 'sonner';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
 
@@ -35,6 +35,29 @@ export function UpdateLimitForm({ configKey, label, currentValue }: { configKey:
             <label className="text-xs text-gray-400 font-bold uppercase tracking-wider">{label}</label>
             <div className="flex gap-2">
                 <input type="number" name="value" defaultValue={currentValue} required className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-2 px-3 text-sm text-white font-mono focus:outline-none focus:border-[var(--color-primary)]" />
+                <button type="submit" className="bg-[var(--color-blue)] text-white rounded px-4 text-sm font-bold tracking-widest hover:opacity-80 transition">SAVE</button>
+            </div>
+        </form>
+    );
+}
+
+export function UpdateLimitPeriodForm({ currentValue }: { currentValue: string }) {
+    const handleUpdate = async (e: any) => {
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        const res = await updateLimitPeriodAction(fd);
+        if (res.success) { playSuccessSound(); toast.success(res.message); }
+        else { playErrorSound(); toast.error(res.message); }
+    };
+
+    return (
+        <form onSubmit={handleUpdate} className="flex flex-col gap-2">
+            <label className="text-xs text-gray-400 font-bold uppercase tracking-wider">Spend Reset Period (Weekly / Monthly)</label>
+            <div className="flex gap-2">
+                <select name="period" defaultValue={currentValue || 'monthly'} className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-2 px-3 text-sm text-white focus:outline-none focus:border-[var(--color-primary)]">
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
                 <button type="submit" className="bg-[var(--color-blue)] text-white rounded px-4 text-sm font-bold tracking-widest hover:opacity-80 transition">SAVE</button>
             </div>
         </form>
