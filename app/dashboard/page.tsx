@@ -3,6 +3,7 @@ import { query } from '@/lib/db';
 import Link from 'next/link';
 import { ShieldAlert, Fingerprint } from 'lucide-react';
 import ChartWrapper from '@/components/ChartWrapper';
+import AnimatedNumber from '@/components/AnimatedNumber';
 
 export default async function DashboardOverview() {
   const session = await getSession();
@@ -61,7 +62,7 @@ export default async function DashboardOverview() {
              </div>
              <p className="text-[10px] text-gray-400 tracking-widest uppercase">Employee Expenditure</p>
              <div className="mt-4">
-                 <p className="text-4xl font-mono font-bold text-white tracking-widest">{parseFloat(totalSpent).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
+                 <p className="text-4xl font-mono font-bold text-white tracking-widest"><AnimatedNumber value={parseFloat(totalSpent)} durationMs={4000} /> XAF</p>
                  <p className="text-xs text-gray-500 mt-1">Total recorded outgoing capital</p>
              </div>
           </div>

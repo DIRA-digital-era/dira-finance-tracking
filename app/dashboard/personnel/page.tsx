@@ -13,7 +13,8 @@ export default async function PersonnelPage() {
    // Grab Users and aggregate multiple titles
    const res = await query(`
       SELECT u.id, u.name, u.email, u.role, u.clearance_level, u.status, u.created_at,
-      (SELECT json_agg(jt.title) FROM user_titles ut JOIN job_titles jt ON ut.title_id = jt.id WHERE ut.user_id = u.id) as titles
+      (SELECT json_agg(jt.title) FROM user_titles ut JOIN job_titles jt ON ut.title_id = jt.id WHERE ut.user_id = u.id) as titles,
+      (SELECT json_agg(jt.id) FROM user_titles ut JOIN job_titles jt ON ut.title_id = jt.id WHERE ut.user_id = u.id) as title_ids
       FROM users u
       ORDER BY u.role DESC, u.created_at ASC
    `);
@@ -32,7 +33,7 @@ export default async function PersonnelPage() {
             <AddUserForm currentRole={session.role} jobTitles={jobTitles} />
          </div>
 
-         <PersonnelClientTable users={users} />
+         <PersonnelClientTable users={users} jobTitles={jobTitles} currentRole={session.role} />
       </div>
    );
 }

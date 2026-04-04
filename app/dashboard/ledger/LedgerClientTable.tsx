@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import AnimatedNumber from '@/components/AnimatedNumber';
 
 export default function LedgerClientTable({ records }: { records: any[] }) {
     const [search, setSearch] = useState('');
@@ -34,16 +35,19 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-[var(--color-card)] p-6 rounded-xl border border-[var(--color-border)] shadow-lg">
                  <p className="text-[10px] text-gray-400 tracking-widest uppercase">Filtered Total Income</p>
-                 <p className="text-3xl font-mono font-bold text-[var(--color-success)] mt-2">{totals.income.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
+                 <p className="text-3xl font-mono font-bold text-[var(--color-success)] mt-2"><AnimatedNumber value={totals.income} /> XAF</p>
               </div>
               <div className="bg-[var(--color-card)] p-6 rounded-xl border border-[var(--color-border)] shadow-lg">
                  <p className="text-[10px] text-gray-400 tracking-widest uppercase">Filtered Total Expenses</p>
-                 <p className="text-3xl font-mono font-bold text-[var(--color-danger)] mt-2">{totals.expenses.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
+                 <p className="text-3xl font-mono font-bold text-[var(--color-danger)] mt-2"><AnimatedNumber value={totals.expenses} /> XAF</p>
               </div>
               <div className="bg-[var(--color-card)] p-6 rounded-xl border border-[var(--color-border)] shadow-lg relative overflow-hidden">
                  <div className="absolute right-0 top-0 h-full w-2 bg-[var(--color-primary)]"></div>
                  <p className="text-[10px] text-[var(--color-primary)] tracking-widest uppercase font-bold">Filtered Network Balance</p>
-                 <p className="text-3xl font-mono font-bold text-[var(--color-foreground)] mt-2">{totals.balance.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
+                 <p className="text-3xl font-mono font-bold text-[var(--color-foreground)] mt-2">
+                    {totals.balance < 0 && "-"}
+                    <AnimatedNumber value={Math.abs(totals.balance)} /> XAF
+                 </p>
               </div>
            </div>
 

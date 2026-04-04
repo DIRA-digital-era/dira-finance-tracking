@@ -1,14 +1,15 @@
 'use client';
 import { addJobTitleAction, updateConfigLimitAction } from './actions';
 import { toast } from 'sonner';
+import { playSuccessSound, playErrorSound } from '@/lib/audio';
 
 export function AddJobTitleForm() {
     const handleAdd = async (e: any) => {
         e.preventDefault();
         const fd = new FormData(e.currentTarget);
         const res = await addJobTitleAction(fd);
-        if (res.success) { toast.success(res.message); e.target.reset(); }
-        else toast.error(res.message);
+        if (res.success) { playSuccessSound(); toast.success(res.message); e.target.reset(); }
+        else { playErrorSound(); toast.error(res.message); }
     };
 
     return (
@@ -25,8 +26,8 @@ export function UpdateLimitForm({ configKey, label, currentValue }: { configKey:
         const fd = new FormData(e.currentTarget);
         fd.append('key', configKey);
         const res = await updateConfigLimitAction(fd);
-        if (res.success) toast.success(res.message);
-        else toast.error(res.message);
+        if (res.success) { playSuccessSound(); toast.success(res.message); }
+        else { playErrorSound(); toast.error(res.message); }
     };
 
     return (
