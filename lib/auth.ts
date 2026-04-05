@@ -14,44 +14,47 @@ export async function encrypt(payload: any) {
 }
 
 export async function decrypt(input: string): Promise<any> {
-    try {
-        const { payload } = await jwtVerify(input, key, { algorithms: ['HS256'] });
-        return payload;
-    } catch (e) {
-        return null;
-    }
+  try {
+    const { payload } = await jwtVerify(input, key, { algorithms: ['HS256'] });
+    return payload;
+  } catch (e) {
+    console.log('JWT Verify failed:', e);
+    return null;
+  }
 }
 
 export async function getSession() {
   const cookieStore = await cookies();
-  const session = cookieStore.get('session')?.value;
+  const session = cookieStore.get('dira_session')?.value;
   if (!session) return null;
   return await decrypt(session);
 }
 
-export async function setSession(userId: number, role: string, name: string) {
-    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    const session = await encrypt({ user_id: userId, role, name, expires });
-    const cookieStore = await cookies();
-    cookieStore.set('session', session, { expires, httpOnly: true });
+export async function setSession(userId: number, role: string, name: string, email: string) {
+  const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const session = await encrypt({ user_id: userId, email, role, name, expires });
+  const cookieStore = await cookies();
+  cookieStore.set('dira_session', session, { expires, httpOnly: true, path: '/', sameSite: 'lax' });
 }
 
 export async function clearSession() {
-    const cookieStore = await cookies();
-    cookieStore.delete('session');
+  const cookieStore = await cookies();
+  cookieStore.delete('dira_session');
 }
 
 export async function updateSession(request: NextRequest) {
-  const session = request.cookies.get('session')?.value;
+  const session = request.cookies.get('dira_session')?.value;
   if (!session) return;
   const parsed = await decrypt(session);
   if (!parsed) return;
   parsed.expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const res = NextResponse.next();
   res.cookies.set({
-    name: 'session',
+    name: 'dira_session',
     value: await encrypt(parsed),
     httpOnly: true,
+    path: '/',
+    sameSite: 'lax',
     expires: parsed.expires,
   });
   return res;
