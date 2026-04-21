@@ -61,7 +61,7 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
         })}
         {mobile && (
            <li className="h-full flex-1">
-               <Link href="/api/logout" className="flex flex-col h-full justify-center items-center text-center text-gray-400 group hover:text-[var(--color-danger)] transition-colors">
+               <Link href="/api/logout" prefetch={false} className="flex flex-col h-full justify-center items-center text-center text-gray-400 group hover:text-[var(--color-danger)] transition-colors">
                   <LogOut className="h-5 w-5 mb-1 text-gray-500 group-hover:text-[var(--color-danger)] transition-colors" />
                   <span className="text-[10px] leading-tight">Logout</span>
                </Link>
@@ -71,7 +71,7 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
 
       {!mobile && (
          <div className="mt-auto border-t border-[var(--color-border)] pt-4">
-            <Link href="/api/logout" className="flex items-center px-4 py-3 text-sm font-medium text-gray-400 hover:bg-[var(--color-card)] hover:text-[var(--color-danger)] transition-colors group rounded-lg">
+            <Link href="/api/logout" prefetch={false} className="flex items-center px-4 py-3 text-sm font-medium text-gray-400 hover:bg-[var(--color-card)] hover:text-[var(--color-danger)] transition-colors group rounded-lg">
                 <LogOut className="h-5 w-5 mr-3 text-gray-500 group-hover:text-[var(--color-danger)] transition-colors" />
                 Logout
             </Link>
