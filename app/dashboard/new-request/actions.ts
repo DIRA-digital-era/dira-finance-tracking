@@ -44,7 +44,6 @@ export async function submitRequest(formData: FormData) {
               [uploadResult.public_id, uploadResult.url, uploadResult.resource_type, session.user_id, recordId]
             );
           } catch (metadataError) {
-            // Log but don't fail the request if metadata storage fails
             console.warn('Failed to save Cloudinary metadata:', metadataError);
           }
        }
@@ -54,6 +53,7 @@ export async function submitRequest(formData: FormData) {
      return { success: true, message: 'Fund Directive Registered Successfully.' };
   } catch (e) {
      console.error('Request upload error:', e);
-     return { success: false, message: 'Failed to synchronize with central ledger.' };
+     const errorMessage = e instanceof Error ? e.message : 'Failed to synchronize with central ledger.';
+     return { success: false, message: errorMessage.includes('Cloudinary') ? 'Cloudinary upload failed. Please contact your administrator.' : 'Failed to synchronize with central ledger.' };
   }
 }

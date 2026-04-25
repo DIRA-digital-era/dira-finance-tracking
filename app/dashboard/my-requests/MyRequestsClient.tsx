@@ -9,6 +9,16 @@ const STATUS_STYLES: Record<string, string> = {
   PENDING: 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
 };
 
+function normalizeReceipts(value: any) {
+  if (Array.isArray(value)) return value;
+  if (!value) return [];
+  try {
+    return JSON.parse(value);
+  } catch {
+    return [];
+  }
+}
+
 export default function MyRequestsClient({ records }: { records: any[] }) {
   const [view, setView] = useState<'table' | 'cards'>('table');
 
@@ -41,7 +51,7 @@ export default function MyRequestsClient({ records }: { records: any[] }) {
               <p className="font-bold text-white mb-1">{r.title}</p>
               <p className="text-sm text-gray-300 font-mono font-bold mt-2">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
               <p className="text-[10px] text-gray-500 font-mono mt-2">{new Date(r.created_at).toLocaleString()}</p>
-              {r.receipts && r.receipts.length > 0 && <ImageLightbox urls={r.receipts} />}
+              {normalizeReceipts(r.receipts).length > 0 && <ImageLightbox urls={normalizeReceipts(r.receipts)} />}
             </div>
           ))}
         </div>
@@ -71,20 +81,23 @@ export default function MyRequestsClient({ records }: { records: any[] }) {
               {records.length === 0 ? (
                 <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">No submissions found.</td></tr>
               ) : (
-                records.map((r: any) => (
-                  <tr key={r.id} className="hover:bg-[var(--color-input)]/20 transition-colors">
-                    <td className="px-6 py-4 font-mono text-[10px] text-gray-500">#DRF-{1000 + r.id}</td>
-                    <td className="px-6 py-4 text-white font-medium">
-                      {r.title}
-                      {r.receipts && r.receipts.length > 0 && <ImageLightbox urls={r.receipts} />}
-                    </td>
-                    <td className="px-6 py-4 text-[10px] text-gray-500 font-mono hidden md:table-cell">{new Date(r.created_at).toLocaleString()}</td>
-                    <td className="px-6 py-4 font-mono font-bold">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${STATUS_STYLES[r.status] || STATUS_STYLES.PENDING}`}>{r.status}</span>
-                    </td>
-                  </tr>
-                ))
+                records.map((r: any) => {
+                  const receipts = normalizeReceipts(r.receipts);
+                  return (
+                    <tr key={r.id} className="hover:bg-[var(--color-input)]/20 transition-colors">
+                      <td className="px-6 py-4 font-mono text-[10px] text-gray-500">#DRF-{1000 + r.id}</td>
+                      <td className="px-6 py-4 text-white font-medium">
+                        {r.title}
+                        {receipts.length > 0 && <ImageLightbox urls={receipts} />}
+                      </td>
+                      <td className="px-6 py-4 text-[10px] text-gray-500 font-mono hidden md:table-cell">{new Date(r.created_at).toLocaleString()}</td>
+                      <td className="px-6 py-4 font-mono font-bold">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${STATUS_STYLES[r.status] || STATUS_STYLES.PENDING}`}>{r.status}</span>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

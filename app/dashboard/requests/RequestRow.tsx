@@ -25,7 +25,17 @@ export default function RequestRow({ request, mobile = false, isSuperAdmin = fal
     setLoading(false);
   };
 
-  const receipts = request.receipts || [];
+  const receipts = Array.isArray(request.receipts)
+    ? request.receipts
+    : request.receipts
+      ? (() => {
+          try {
+            return JSON.parse(request.receipts);
+          } catch {
+            return [];
+          }
+        })()
+      : [];
   const isPending = request.status === 'PENDING';
 
   if (mobile) {
