@@ -98,7 +98,19 @@ export async function initDb() {
       );
     `);
 
-    // Bootstrap default config if empty
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS cloudinary_files (
+          id SERIAL PRIMARY KEY,
+          public_id VARCHAR(255) UNIQUE NOT NULL,
+          media_url TEXT NOT NULL,
+          resource_type VARCHAR(100) NOT NULL,
+          user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+          record_id INTEGER REFERENCES records(id) ON DELETE CASCADE,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // @sym:initDb: Bootstrap default config if empty
     const checkConfig = await client.query("SELECT key FROM config WHERE key = 'max_request_level_1'");
     if (checkConfig.rowCount === 0) {
        await client.query("INSERT INTO config (key, value) VALUES ('max_request_level_1', '500000')");

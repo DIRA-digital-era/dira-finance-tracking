@@ -36,8 +36,17 @@ export async function submitRequest(formData: FormData) {
      // process uploads iteratively
      for (const file of files) {
        if (file && file.size > 0) {
-          const url = await uploadFile(file);
-          await query('INSERT INTO receipts (record_id, file_url) VALUES ($1, $2)', [recordId, url]);
+          const uploadResult = await uploadFile(file);
+          await query('INSERT INTO receipts (record_id, file_url) VALUES ($1, $2)', [recordId, uploadResult.url]);
+          try {
+            await query(
+              'INSERT INTO cloudinary_files (public_id, media_url, resource_type, user_id, record_id) VALUES ($1, $2, $3, $4, $5)',
+              [uploadResult.public_id, uploadResult.url, uploadResult.resource_type, session.user_id, recordId]
+            );
+          } catch (metadataError) {
+            // Log but don't fail the request if metadata storage fails
+            console.warn('Failed to save Cloudinary metadata:', metadataError);
+          }
        }
      }
      
