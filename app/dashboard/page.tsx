@@ -21,11 +21,12 @@ export default async function DashboardOverview() {
   const configs = Object.fromEntries(configRes.rows.map((r: any) => [r.key, JSON.parse(r.value)]));
   
   const limitPeriod = configs['limit_period'] || 'monthly';
-  const limitKey = 'max_request_level_' + (session.clearance_level || 1);
+  const limitRole = session.role === 'SUPER_ADMIN' ? 3 : (session.role === 'ADMIN' ? 2 : 1);
+  const limitKey = `max_request_level_${limitRole}`;
   const baseLimit = parseFloat(configs[limitKey] || '500000');
 
   // get date interval
-  const intervalStr = limitPeriod === 'weekly' ? "1 week" : "1 month";
+  const intervalStr = limitPeriod === 'weekly' ? '1 week' : '1 month';
 
   // Expenditures in active period
   const totalSpentPeriodRes = await query(`

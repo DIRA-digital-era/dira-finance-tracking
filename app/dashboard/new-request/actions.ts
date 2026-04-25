@@ -9,9 +9,22 @@ export async function submitRequest(formData: FormData) {
   const session = await getSession();
   if (!session) return { success: false, message: 'Unauthorized access.' };
 
-  const amount = formData.get('amount') as string;
+  const amount = parseFloat(formData.get('amount') as string);
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
+
+  // Check if amount exceeds user's limit
+  const lvl = session.role === 'SUPER_ADMIN' ? 3 : (session.role === 'ADMIN' ? 2 : 1);
+  const configKey = `max_request_level_${lvl}`;
+  let maxLimit = 0;
+  try {
+    const cfgRes = await query('SELECT value FROM config WHERE key = $1', [configKey]);
+    if (cfgRes.rows.length > 0) maxLimit = parseInt(JSON.parse(cfgRes.rows[0].value)) || 0;
+  } catch(e) { /* config table may not exist yet */ }
+
+  if (maxLimit > 0 && amount > maxLimit) {
+    return { success: false, message: `Request amount exceeds your spending limit of ${maxLimit.toLocaleString('en-US')} XAF.` };
+  }
 
   const files = formData.getAll('receipts') as File[];
   if (files.length > 4) return { success: false, message: 'Maximum 4 receipts allowed.' };
