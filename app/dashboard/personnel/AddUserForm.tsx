@@ -14,7 +14,7 @@ export default function AddUserForm({ currentRole, jobTitles }: { currentRole: s
   if (!open) {
       return (
           <button onClick={() => setOpen(true)} className="bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-hover)] transition font-bold py-2 px-4 rounded text-sm tracking-widest w-full md:w-auto mt-4 md:mt-0">
-             + REGISTER EMPLOYEE
+             + ADD STAFF
           </button>
       );
   }
@@ -44,9 +44,9 @@ export default function AddUserForm({ currentRole, jobTitles }: { currentRole: s
            <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center bg-[var(--color-background)]/50">
               <div>
                  <h2 className="text-xl font-bold font-mono tracking-widest text-[var(--color-primary)] flex items-center gap-2">
-                    <UserPlus className="w-5 h-5" /> NEW EMPLOYEE
+                    <UserPlus className="w-5 h-5" /> ADD STAFF
                  </h2>
-                 <p className="text-[10px] text-gray-500 uppercase mt-1">Configure profile and access level</p>
+                 <p className="text-[10px] text-gray-500 uppercase mt-1">Set up staff account and permissions</p>
               </div>
               <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-white transition">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>

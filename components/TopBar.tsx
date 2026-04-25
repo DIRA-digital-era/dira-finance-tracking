@@ -26,7 +26,7 @@ export default function TopBar({ user, maxLimit, role }: { user: any, maxLimit: 
                        {(role === 'SUPER_ADMIN' || role === 'ADMIN') && (
                            <>
                                <Link href="/dashboard/ledger" className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors">
-                                   <Wallet className="w-4 h-4" /> Master Ledger
+                                   <Wallet className="w-4 h-4" /> Financial Records
                                </Link>
                                {role === 'SUPER_ADMIN' && (
                                    <Link href="/dashboard/config" className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors border-t border-[var(--color-border)]">
@@ -49,7 +49,7 @@ export default function TopBar({ user, maxLimit, role }: { user: any, maxLimit: 
        <div className="flex items-center gap-6">
            <div className="hidden md:flex items-center gap-4 border-r border-[var(--color-border)] pr-6">
                <div className="text-right">
-                   <p className="text-[10px] text-gray-500 uppercase tracking-widest">Max Request Limit</p>
+                   <p className="text-[10px] text-gray-500 uppercase tracking-widest">Spending Limit</p>
                    <p className="text-[var(--color-primary)] font-bold font-mono">
                      {maxLimit > 0
                        ? maxLimit.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' XAF'

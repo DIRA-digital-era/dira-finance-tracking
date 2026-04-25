@@ -26,17 +26,17 @@ export default async function ConfigPage() {
 
    return (
       <div className="space-y-6 max-w-5xl">
-         <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">SYSTEM CONFIGURATION</h2>
+         <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">SYSTEM SETTINGS</h2>
          
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
              {/* Configuration Left */}
              <div className="space-y-6">
                  <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg">
-                     <p className="text-[10px] text-[var(--color-primary)] tracking-widest mb-4 uppercase">Expenditure Limits by Clearance</p>
+                     <p className="text-[10px] text-[var(--color-primary)] tracking-widest mb-4 uppercase">Spending Limits by Role</p>
                      <div className="space-y-4">
-                         <UpdateLimitForm configKey="max_request_level_1" label="Level 1 Limit (Employee)" currentValue={getConfig('max_request_level_1')} />
-                         <UpdateLimitForm configKey="max_request_level_2" label="Level 2 Limit (Admin)" currentValue={getConfig('max_request_level_2')} />
-                         <UpdateLimitForm configKey="max_request_level_3" label="Level 3 Limit (Director)" currentValue={getConfig('max_request_level_3')} />
+                         <UpdateLimitForm configKey="max_request_level_1" label="Staff Limit" currentValue={getConfig('max_request_level_1')} />
+                         <UpdateLimitForm configKey="max_request_level_2" label="Admin Limit" currentValue={getConfig('max_request_level_2')} />
+                         <UpdateLimitForm configKey="max_request_level_3" label="Director Limit" currentValue={getConfig('max_request_level_3')} />
                          <div className="pt-4 border-t border-[var(--color-border)]">
                              <UpdateLimitPeriodForm currentValue={getConfig('limit_period')} />
                          </div>
@@ -44,7 +44,7 @@ export default async function ConfigPage() {
                  </div>
 
                  <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg">
-                     <p className="text-[10px] text-[var(--color-primary)] tracking-widest mb-4 uppercase">Available Corporate Titles</p>
+                     <p className="text-[10px] text-[var(--color-primary)] tracking-widest mb-4 uppercase">Job Titles</p>
                      <div className="flex flex-wrap gap-2 mb-4">
                          {titlesRes.rows.map((t: any) => (
                              <span key={t.id} className="bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-1 rounded text-xs text-gray-300">
@@ -61,7 +61,7 @@ export default async function ConfigPage() {
              {/* Audit Logs Right */}
              <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] shadow-lg flex flex-col h-[600px]">
                  <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-background)]/50">
-                     <p className="text-[10px] text-[var(--color-primary)] tracking-widest uppercase font-bold">System Audit Logs (Recent 50)</p>
+                     <p className="text-[10px] text-[var(--color-primary)] tracking-widest uppercase font-bold">Activity Log (Recent 50)</p>
                  </div>
                  <div className="flex-1 overflow-y-auto divide-y divide-[var(--color-border)]">
                      {logsRes.rows.map((log: any) => (
@@ -74,7 +74,7 @@ export default async function ConfigPage() {
                                 <span className="text-[9px] text-gray-500 font-mono">{new Date(log.created_at).toLocaleString()}</span>
                             </div>
                             <p className="text-sm text-white mt-2">{log.details}</p>
-                            <p className="text-[10px] text-gray-500 mt-1">Initiator: {log.actor_name} ({log.actor_email})</p>
+                            <p className="text-[10px] text-gray-500 mt-1">By: {log.actor_name} ({log.actor_email})</p>
                          </div>
                      ))}
                  </div>

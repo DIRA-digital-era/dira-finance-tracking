@@ -47,7 +47,7 @@ export default function Login() {
           </div>
 
           <h1 className="text-2xl font-bold tracking-wider text-[var(--color-primary)]">DIRA FINANCIALS</h1>
-          <p className="mt-2 text-sm text-[var(--color-foreground)] opacity-70">AUTHORIZED PERSONNEL ONLY</p>
+          <p className="mt-2 text-sm text-[var(--color-foreground)] opacity-70">STAFF ONLY</p>
         </div>
 
         <form action={handleLogin} className="space-y-6">
@@ -82,14 +82,14 @@ export default function Login() {
             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
               <Lock className="h-5 w-5 text-[var(--color-primary-foreground)] opacity-70 group-hover:opacity-100 transition-opacity" />
             </span>
-            {loading ? 'AUTHENTICATING...' : 'INITIALIZE HANDSHAKE'}
+            {loading ? 'LOGGING IN...' : 'LOGIN'}
             <ArrowRight className="absolute right-4 h-5 w-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
           </button>
         </form>
 
         <div className="mt-6 border-t border-[var(--color-border)] pt-4 text-center">
           <p className="text-xs text-justify text-gray-500">
-            WARNING: This system is property of DIRA Tech. Unauthorized access is strictly prohibited and logged. By proceeding you agree to the organizational code of conduct.
+            WARNING: This system belongs to DIRA. Unauthorized access is not allowed and will be tracked. By continuing you agree to follow company rules.
           </p>
         </div>
       </div>

@@ -33,7 +33,7 @@ export default function IncomeForm() {
         onClick={() => setOpen(true)}
         className="flex items-center gap-2 bg-[var(--color-success)] text-white font-bold py-2 px-4 rounded text-sm tracking-widest hover:opacity-90 transition"
       >
-        <PlusCircle className="w-4 h-4" /> ADD INCOME
+        <PlusCircle className="w-4 h-4" /> ADD MONEY IN
       </button>
     );
   }
@@ -42,7 +42,7 @@ export default function IncomeForm() {
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl w-full max-w-lg shadow-2xl">
         <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-background)]/50">
-          <h3 className="text-sm font-bold font-mono tracking-widest text-[var(--color-success)] uppercase">Record Income</h3>
+          <h3 className="text-sm font-bold font-mono tracking-widest text-[var(--color-success)] uppercase">Add Money Received</h3>
           <button type="button" onClick={() => setOpen(false)} className="text-gray-500 hover:text-white transition">
             <X className="w-5 h-5" />
           </button>

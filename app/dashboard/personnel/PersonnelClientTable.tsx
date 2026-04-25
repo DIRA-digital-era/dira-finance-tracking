@@ -29,13 +29,13 @@ export default function PersonnelClientTable({ users, jobTitles, currentRole }: 
         else { playErrorSound(); toast.error(res.message); }
     };
     const handleDelete = async (id: number) => {
-        if(!confirm('Mark this employee as past/deleted?')) return;
+        if(!confirm('Remove this staff member?')) return;
         const res = await deleteUserAction(id);
         if(res.success) { playSuccessSound(); toast.success(res.message); }
         else { playErrorSound(); toast.error(res.message); }
     };
     const handleReinstate = async (id: number) => {
-        if(!confirm('Reinstate this employee?')) return;
+        if(!confirm('Bring back this staff member?')) return;
         const res = await reinstateUserAction(id);
         if(res.success) { playSuccessSound(); toast.success(res.message); }
         else { playErrorSound(); toast.error(res.message); }

@@ -38,7 +38,7 @@ export default async function RequestsPage() {
    return (
       <div className="space-y-6">
          <div className="flex justify-between items-end">
-            <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">REQUESTS MANAGEMENT</h2>
+            <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">REVIEW REQUESTS</h2>
          </div>
 
          <div className="grid grid-cols-2 gap-4 md:gap-6">

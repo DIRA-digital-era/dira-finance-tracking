@@ -31,8 +31,8 @@ export default async function PersonnelPage() {
       <div className="space-y-6">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>
-               <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">PERSONNEL DIRECTORY</h2>
-               <p className="text-sm text-gray-400 mt-1">Manage global employee clearance and administrative access levels.</p>
+               <h2 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">STAFF LIST</h2>
+               <p className="text-sm text-gray-400 mt-1">Manage staff and their access levels.</p>
             </div>
             <div className="flex gap-3 flex-wrap">
                {session.role === 'SUPER_ADMIN' && <DispatchFundsModal users={activeUsers} />}

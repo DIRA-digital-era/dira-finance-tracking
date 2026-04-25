@@ -14,15 +14,15 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
 
   // Add Personnel and All Requests on mobile for admins
   if ((role === 'SUPER_ADMIN' || role === 'ADMIN') && mobile) {
-    navItems.push({ name: 'Personnel', href: '/dashboard/personnel', icon: Users });
+    navItems.push({ name: 'Staff', href: '/dashboard/personnel', icon: Users });
     navItems.push({ name: 'All Requests', href: '/dashboard/requests', icon: Receipt });
   }
 
   // Add all admin items on desktop
   if (!mobile && (role === 'SUPER_ADMIN' || role === 'ADMIN')) {
-    navItems.push({ name: 'Personnel', href: '/dashboard/personnel', icon: Users });
+    navItems.push({ name: 'Staff', href: '/dashboard/personnel', icon: Users });
     navItems.push({ name: 'All Requests', href: '/dashboard/requests', icon: Receipt });
-    navItems.push({ name: 'Master Ledger', href: '/dashboard/ledger', icon: Wallet });
+    navItems.push({ name: 'Financial Records', href: '/dashboard/ledger', icon: Wallet });
     if (role === 'SUPER_ADMIN') {
        navItems.push({ name: 'System', href: '/dashboard/config', icon: Settings });
     }
@@ -38,10 +38,10 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
             </div>
             <div>
               <h2 className="text-xl font-bold tracking-widest text-[var(--color-primary)]">DIRA</h2>
-              <p className="text-[10px] text-gray-500 uppercase leading-none">INTERNAL LEDGER</p>
+              <p className="text-[10px] text-gray-500 uppercase leading-none">MONEY SYSTEM</p>
             </div>
           </div>
-          <div className="text-xs bg-[var(--color-primary)]/10 text-[var(--color-primary)] w-fit px-2 py-1 rounded">CLEARANCE: {role}</div>
+          <div className="text-xs bg-[var(--color-primary)]/10 text-[var(--color-primary)] w-fit px-2 py-1 rounded">ROLE: {role}</div>
         </div>
       )}
 

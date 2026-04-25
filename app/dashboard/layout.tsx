@@ -9,7 +9,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const session = await getSession();
   if (!session) redirect('/login');
 
-  // Fetch the request limit for this user's clearance level
+  // Get the spending limit for this user's role
   const lvl = session.role === 'SUPER_ADMIN' ? 3 : (session.role === 'ADMIN' ? 2 : 1);
   const configKey = `max_request_level_${lvl}`;
   let maxLimit = 0;

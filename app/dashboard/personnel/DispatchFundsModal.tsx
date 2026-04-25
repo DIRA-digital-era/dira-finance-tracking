@@ -35,7 +35,7 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
         onClick={() => setOpen(true)}
         className="flex items-center gap-2 bg-[var(--color-accent)] text-white hover:opacity-90 transition font-bold py-2 px-4 rounded text-sm tracking-widest"
       >
-        <Send className="w-4 h-4" /> DISPATCH FUNDS
+        <Send className="w-4 h-4" /> SEND MONEY
       </button>
 
       {open && (
@@ -45,9 +45,9 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
             <div className="p-6 border-b border-[var(--color-border)] bg-[var(--color-background)]/50 flex justify-between items-center">
               <div>
                 <h2 className="text-xl font-bold font-mono tracking-widest text-[var(--color-accent)] flex items-center gap-2">
-                  <Send className="w-5 h-5" /> DISPATCH FUNDS
+                  <Send className="w-5 h-5" /> SEND MONEY
                 </h2>
-                <p className="text-[10px] text-gray-500 uppercase mt-1">Director-level capital allocation</p>
+                <p className="text-[10px] text-gray-500 uppercase mt-1">Send money to staff</p>
               </div>
               <button type="button" onClick={() => setOpen(false)} className="text-gray-500 hover:text-white transition">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -58,13 +58,13 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-400 mb-1 tracking-wider uppercase">Recipient</label>
+                <label className="block text-xs font-bold text-gray-400 mb-1 tracking-wider uppercase">Send To</label>
                 <select
                   name="target_user_id"
                   required
                   className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 px-3 text-white focus:outline-none focus:border-[var(--color-accent)] appearance-none"
                 >
-                  <option value="">Select employee...</option>
+                  <option value="">Choose staff member...</option>
                   {eligibleRecipients.map(u => (
                     <option key={u.id} value={u.id}>{u.name} — {u.email} ({u.role})</option>
                   ))}
