@@ -26,7 +26,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       </div>
 
       <div className="flex-1 flex flex-col w-full h-full min-h-0 relative">
-        <TopBar user={session} maxLimit={maxLimit} />
+        <TopBar user={session} maxLimit={maxLimit} role={session.role} />
         
         <main className="flex-1 overflow-auto p-4 md:p-8 pb-24 md:pb-8">
            {children}

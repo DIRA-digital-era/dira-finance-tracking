@@ -9,11 +9,17 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Profile', href: '/dashboard/profile', icon: UserCircle },
     { name: 'My Requests', href: '/dashboard/my-requests', icon: Receipt },
   ];
 
-  if (role === 'SUPER_ADMIN' || role === 'ADMIN') {
+  // Add Personnel and All Requests on mobile for admins
+  if ((role === 'SUPER_ADMIN' || role === 'ADMIN') && mobile) {
+    navItems.push({ name: 'Personnel', href: '/dashboard/personnel', icon: Users });
+    navItems.push({ name: 'All Requests', href: '/dashboard/requests', icon: Receipt });
+  }
+
+  // Add all admin items on desktop
+  if (!mobile && (role === 'SUPER_ADMIN' || role === 'ADMIN')) {
     navItems.push({ name: 'Personnel', href: '/dashboard/personnel', icon: Users });
     navItems.push({ name: 'All Requests', href: '/dashboard/requests', icon: Receipt });
     navItems.push({ name: 'Master Ledger', href: '/dashboard/ledger', icon: Wallet });
@@ -59,14 +65,7 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
             </li>
           );
         })}
-        {mobile && (
-           <li className="h-full flex-1">
-               <Link href="/api/logout" prefetch={false} className="flex flex-col h-full justify-center items-center text-center text-gray-400 group hover:text-[var(--color-danger)] transition-colors">
-                  <LogOut className="h-5 w-5 mb-1 text-gray-500 group-hover:text-[var(--color-danger)] transition-colors" />
-                  <span className="text-[10px] leading-tight">Logout</span>
-               </Link>
-           </li>
-        )}
+
       </ul>
 
       {!mobile && (
