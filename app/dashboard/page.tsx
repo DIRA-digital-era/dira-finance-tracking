@@ -77,14 +77,14 @@ export default async function DashboardOverview() {
              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition">
                 <Fingerprint className="w-24 h-24 text-[var(--color-primary)]" />
              </div>
-             <p className="text-[10px] text-gray-400 tracking-widest flex justify-between uppercase relative z-10">Employee Identity <span className="bg-[var(--color-accent)]/20 text-[var(--color-accent)] px-1 rounded">LVL {session?.role === 'SUPER_ADMIN' ? 'MAX' : (session?.role === 'ADMIN' ? '2' : '1')}</span></p>
-             <h3 className="text-xl font-bold mt-2 text-white relative z-10">{session.name}</h3>
+             <p className="text-[10px] text-slate-700 tracking-widest flex justify-between uppercase relative z-10">Employee Identity <span className="bg-[var(--color-accent)]/20 text-[var(--color-accent)] px-1 rounded">LVL {session?.role === 'SUPER_ADMIN' ? 'MAX' : (session?.role === 'ADMIN' ? '2' : '1')}</span></p>
+             <h3 className="text-xl font-bold mt-2 text-[var(--color-foreground)] relative z-10">{session.name}</h3>
              <p className="text-xs text-[var(--color-primary)] relative z-10 mb-4">{session.role}</p>
              
              <div className="flex flex-wrap gap-1 relative z-10">
-                 {titles.length === 0 && <span className="text-[9px] text-gray-500 italic">No generic titles assigned</span>}
+                 {titles.length === 0 && <span className="text-[9px] text-slate-500 italic">No generic titles assigned</span>}
                  {titles.map((t: string, i: number) => (
-                    <span key={i} className="text-[9px] bg-[var(--color-input)]/80 text-gray-300 px-2 py-1 border border-[var(--color-border)] rounded">{t}</span>
+                    <span key={i} className="text-[9px] bg-[var(--color-input)]/80 text-slate-700 px-2 py-1 border border-[var(--color-border)] rounded">{t}</span>
                  ))}
              </div>
           </div>
@@ -93,10 +93,10 @@ export default async function DashboardOverview() {
              <div className="absolute -right-8 -bottom-8 opacity-5">
                 <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
-             <p className="text-[10px] text-gray-400 tracking-widest uppercase">Employee Expenditure</p>
+             <p className="text-[10px] text-slate-700 tracking-widest uppercase">Employee Expenditure</p>
              <div className="mt-4">
-                 <p className="text-4xl font-mono font-bold text-white tracking-widest"><AnimatedNumber value={parseFloat(totalSpent)} durationMs={4000} /> XAF</p>
-                 <p className="text-xs text-gray-500 mt-1">Total recorded outgoing capital</p>
+                 <p className="text-4xl font-mono font-bold text-[var(--color-foreground)] tracking-widest"><AnimatedNumber value={parseFloat(totalSpent)} durationMs={4000} /> XAF</p>
+                 <p className="text-xs text-slate-600 mt-1">Total recorded outgoing capital</p>
              </div>
           </div>
           
@@ -110,8 +110,8 @@ export default async function DashboardOverview() {
                      <span className="text-[9px] bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-2 py-0.5 rounded border border-[var(--color-primary)]/20">Active</span>
                  </p>
                  <div className="mt-5">
-                     <p className="text-2xl font-mono font-bold text-white tracking-widest"><AnimatedNumber value={remainingBudget} /> XAF</p>
-                     <p className="text-[10px] text-gray-500 mt-1">of <span className="text-gray-300 font-mono">{activeBudget.toLocaleString('en-US')}</span> allocated limit</p>
+                     <p className="text-2xl font-mono font-bold text-[var(--color-foreground)] tracking-widest"><AnimatedNumber value={remainingBudget} /> XAF</p>
+                     <p className="text-[10px] text-slate-600 mt-1">of <span className="text-slate-800 font-mono">{activeBudget.toLocaleString('en-US')}</span> allocated limit</p>
                  </div>
              </div>
                  <div className="mt-4">
@@ -119,7 +119,7 @@ export default async function DashboardOverview() {
                          <div className={`h-2 rounded-full transition-all duration-1000 ${percentageUsed > 90 ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : percentageUsed > 75 ? 'bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]' : 'bg-[var(--color-success)] shadow-[0_0_10px_rgba(16,185,129,0.5)]'}`} style={{ width: `${percentageUsed}%` }}></div>
                      </div>
                  <div className="flex justify-between items-center mt-2">
-                     <p className="text-[9px] text-gray-400 font-mono">{percentageUsed.toFixed(1)}% Used</p>
+                     <p className="text-[9px] text-slate-700 font-mono">{percentageUsed.toFixed(1)}% Used</p>
                      {dispatchedPeriod > 0 && <p className="text-[9px] text-[var(--color-success)] font-mono">+{dispatchedPeriod.toLocaleString()} Dispatched</p>}
                  </div>
              </div>
@@ -127,7 +127,7 @@ export default async function DashboardOverview() {
        </div>
        
        <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg">
-           <p className="text-[10px] text-gray-400 tracking-widest mb-4 uppercase">Actual Expenditure Velocity (30D)</p>
+           <p className="text-[10px] text-slate-700 tracking-widest mb-4 uppercase">Actual Expenditure Velocity (30D)</p>
            <ChartWrapper data={chartData} />
        </div>
 

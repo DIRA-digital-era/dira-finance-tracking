@@ -39,17 +39,18 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
       </button>
 
       {open && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[var(--color-card)] border border-[var(--color-accent)]/40 rounded-xl w-full max-w-md overflow-hidden shadow-[0_0_60px_rgba(168,85,247,0.2)]">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0" onClick={() => setOpen(false)} />
+          <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl w-full max-w-md overflow-hidden shadow-2xl relative z-10">
             <div className="absolute top-0 w-full h-[2px] bg-gradient-to-r from-[var(--color-accent)] to-transparent" />
-            <div className="p-6 border-b border-[var(--color-border)] bg-[var(--color-background)]/50 flex justify-between items-center">
+            <div className="p-6 border-b border-[var(--color-border)] bg-[var(--color-input)] flex justify-between items-center">
               <div>
                 <h2 className="text-xl font-bold font-mono tracking-widest text-[var(--color-accent)] flex items-center gap-2">
                   <Send className="w-5 h-5" /> SEND MONEY
                 </h2>
-                <p className="text-[10px] text-gray-500 uppercase mt-1">Send money to staff</p>
+                <p className="text-[10px] text-[var(--color-foreground)] uppercase mt-1">Send money to staff</p>
               </div>
-              <button type="button" onClick={() => setOpen(false)} className="text-gray-500 hover:text-white transition">
+              <button type="button" onClick={() => setOpen(false)} className="text-[var(--color-foreground)] hover:text-[var(--color-accent)] transition relative z-20">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -58,11 +59,11 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-400 mb-1 tracking-wider uppercase">Send To</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1 tracking-wider uppercase">Send To</label>
                 <select
                   name="target_user_id"
                   required
-                  className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 px-3 text-white focus:outline-none focus:border-[var(--color-accent)] appearance-none"
+                  className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 px-3 text-[var(--color-foreground)] focus:outline-none focus:border-[var(--color-accent)] appearance-none"
                 >
                   <option value="">Choose staff member...</option>
                   {eligibleRecipients.map(u => (
@@ -72,7 +73,7 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 mb-1 tracking-wider uppercase">Amount (XAF)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1 tracking-wider uppercase">Amount (XAF)</label>
                 <div className="relative">
                   <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <input
@@ -82,18 +83,18 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
                     step="1"
                     required
                     placeholder="0"
-                    className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 pl-10 pr-3 text-white font-mono text-lg focus:outline-none focus:border-[var(--color-accent)]"
+                    className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 pl-10 pr-3 text-[var(--color-foreground)] font-mono text-lg focus:outline-none focus:border-[var(--color-accent)]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 mb-1 tracking-wider uppercase">Note / Purpose</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1 tracking-wider uppercase">Note / Purpose</label>
                 <textarea
                   name="note"
                   rows={3}
                   placeholder="Reason for this fund dispatch..."
-                  className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded p-3 text-white focus:outline-none focus:border-[var(--color-accent)]"
+                  className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded p-3 text-[var(--color-foreground)] focus:outline-none focus:border-[var(--color-accent)]"
                 />
               </div>
 

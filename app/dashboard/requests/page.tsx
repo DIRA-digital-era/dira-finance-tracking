@@ -58,7 +58,7 @@ export default async function RequestsPage() {
                <p className="text-xs font-bold tracking-widest uppercase text-orange-400">⬤ Pending Authorization Queue</p>
              </div>
              {/* Desktop table */}
-             <table className="w-full text-left text-sm text-gray-300 hidden md:table">
+             <table className="w-full text-left text-sm text-[var(--color-foreground)] hidden md:table">
                   <thead className="text-[10px] uppercase bg-[var(--color-input)]/50 text-gray-500">
                      <tr>
                         <th className="px-6 py-4 font-medium tracking-wider">Employee</th>
@@ -94,7 +94,7 @@ export default async function RequestsPage() {
                  <p className="text-xs font-bold tracking-widest uppercase text-[var(--color-accent)]">Director Override — Resolved Requests (Last 30)</p>
                </div>
                {/* Desktop table */}
-               <table className="w-full text-left text-sm text-gray-300 hidden md:table">
+               <table className="w-full text-left text-sm text-[var(--color-foreground)] hidden md:table">
                     <thead className="text-[10px] uppercase bg-[var(--color-input)]/50 text-gray-500">
                        <tr>
                           <th className="px-6 py-4 font-medium tracking-wider">Employee</th>

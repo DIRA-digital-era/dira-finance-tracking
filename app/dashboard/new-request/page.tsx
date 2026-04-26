@@ -62,35 +62,35 @@ export default function NewRequestPage() {
         <h1 className="text-2xl font-bold font-mono tracking-widest text-[var(--color-primary)]">INITIATE FUND REQUEST</h1>
       </div>
       
-      <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-6 shadow-xl backdrop-blur-sm">
+      <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-6 shadow-xl">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Expenditure Title</label>
-              <input name="title" required type="text" className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded p-3 text-white focus:outline-none focus:border-[var(--color-primary)]" placeholder="e.g. Server Procurement" />
+              <label className="block text-sm font-bold text-slate-700 mb-1">Expenditure Title</label>
+              <input name="title" required type="text" className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded p-3 text-[var(--color-foreground)] focus:outline-none focus:border-[var(--color-primary)]" placeholder="e.g. Server Procurement" />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Requested Amount (XAF)</label>
+              <label className="block text-sm font-bold text-slate-700 mb-1">Requested Amount (XAF)</label>
               <div className="relative">
-                 <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                 <input name="amount" required type="number" step="0.01" min="0" className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 pl-10 pr-3 text-white focus:outline-none focus:border-[var(--color-primary)] font-mono text-lg" placeholder="0.00" />
+                 <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                 <input name="amount" required type="number" step="0.01" min="0" className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 pl-10 pr-3 text-[var(--color-foreground)] focus:outline-none focus:border-[var(--color-primary)] font-mono text-lg" placeholder="0.00" />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Justification</label>
-              <textarea name="description" required rows={4} className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded p-3 text-white focus:outline-none focus:border-[var(--color-primary)]" placeholder="Detailed reason for this Employee expense..."></textarea>
+              <label className="block text-sm font-bold text-slate-700 mb-1">Justification</label>
+              <textarea name="description" required rows={4} className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded p-3 text-[var(--color-foreground)] focus:outline-none focus:border-[var(--color-primary)]" placeholder="Detailed reason for this Employee expense..."></textarea>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Receipts / Proof / Invoices (Max 4)</label>
+              <label className="block text-sm font-bold text-slate-700 mb-1">Receipts / Proof / Invoices (Max 4)</label>
               
               <div className="mt-2 flex items-center justify-center w-full">
                   <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-[var(--color-border)] border-dashed rounded-lg cursor-pointer bg-[var(--color-input)] hover:bg-[var(--color-card-solid)] transition">
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                          <UploadCloud className="w-8 h-8 mb-2 text-gray-500" />
-                          <p className="mb-2 text-sm text-gray-400"><span className="font-semibold">Click to upload</span></p>
+                          <UploadCloud className="w-8 h-8 mb-2 text-slate-500" />
+                          <p className="mb-2 text-sm text-slate-600"><span className="font-semibold">Click to upload</span></p>
                       </div>
                       <input name="receipts_input" type="file" className="hidden" multiple accept="image/*" onChange={handleFileChange} />
                   </label>

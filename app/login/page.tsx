@@ -39,7 +39,7 @@ export default function Login() {
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, var(--color-primary) 0%, transparent 40%)' }} />
       <div className="absolute top-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-20" />
 
-      <div className="relative z-10 w-full max-w-md rounded-xl bg-[var(--color-card)] p-8 border border-[var(--color-border)] shadow-2xl backdrop-blur-sm">
+      <div className="relative z-10 w-full max-w-md rounded-xl bg-[var(--color-card)] p-8 border border-[var(--color-border)] shadow-2xl">
 
         <div className="mb-8 flex flex-col items-center">
           <div className="relative w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)] shadow-[0_0_20px_rgba(0,229,255,0.3)] bg-[var(--color-input)] flex items-center justify-center">
@@ -61,7 +61,7 @@ export default function Login() {
                 name="email"
                 type="email"
                 required
-                className="block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-input)] py-3 pl-10 pr-3 text-white placeholder-gray-400 focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+                className="block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-input)] py-3 pl-10 pr-3 text-[var(--color-foreground)] placeholder-slate-500 focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
                 placeholder="Email Address"
               />
             </div>

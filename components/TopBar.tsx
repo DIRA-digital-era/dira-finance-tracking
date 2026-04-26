@@ -22,20 +22,23 @@ export default function TopBar({ user, maxLimit, role }: { user: any, maxLimit: 
                    <Menu className="w-5 h-5 text-[var(--color-foreground)]" />
                </button>
                {settingsOpen && (
-                   <div className="absolute top-full left-0 mt-1 bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg shadow-lg min-w-48 z-50">
-                       {(role === 'SUPER_ADMIN' || role === 'ADMIN') && (
-                           <>
-                               <Link href="/dashboard/ledger" className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors">
-                                   <Wallet className="w-4 h-4" /> Financial Records
-                               </Link>
-                               {role === 'SUPER_ADMIN' && (
-                                   <Link href="/dashboard/config" className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors border-t border-[var(--color-border)]">
-                                       <Settings className="w-4 h-4" /> System Settings
+                   <>
+                       <div className="fixed inset-0 z-40" onClick={() => setSettingsOpen(false)} />
+                       <div className="absolute top-full left-0 mt-1 bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg shadow-xl min-w-48 z-50 overflow-hidden">
+                           {(role === 'SUPER_ADMIN' || role === 'ADMIN') && (
+                               <>
+                                   <Link href="/dashboard/ledger" onClick={() => setSettingsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors text-[var(--color-foreground)]">
+                                       <Wallet className="w-4 h-4" /> Financial Records
                                    </Link>
-                               )}
-                           </>
-                       )}
-                   </div>
+                                   {role === 'SUPER_ADMIN' && (
+                                       <Link href="/dashboard/config" onClick={() => setSettingsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors border-t border-[var(--color-border)] text-[var(--color-foreground)]">
+                                           <Settings className="w-4 h-4" /> System Settings
+                                       </Link>
+                                   )}
+                               </>
+                           )}
+                       </div>
+                   </>
                )}
            </div>
 
@@ -49,7 +52,7 @@ export default function TopBar({ user, maxLimit, role }: { user: any, maxLimit: 
        <div className="flex items-center gap-6">
            <div className="hidden md:flex items-center gap-4 border-r border-[var(--color-border)] pr-6">
                <div className="text-right">
-                   <p className="text-[10px] text-gray-500 uppercase tracking-widest">Spending Limit</p>
+                   <p className="text-[10px] text-slate-700 font-bold uppercase tracking-widest">Spending Limit</p>
                    <p className="text-[var(--color-primary)] font-bold font-mono">
                      {maxLimit > 0
                        ? maxLimit.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' XAF'
@@ -73,14 +76,17 @@ export default function TopBar({ user, maxLimit, role }: { user: any, maxLimit: 
                </button>
                
                {profileOpen && (
-                   <div className="absolute top-full right-0 mt-1 bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg shadow-lg min-w-40 z-50">
-                       <Link href="/dashboard/profile" className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors rounded-t-lg">
-                           <UserCircle className="w-4 h-4" /> Profile
-                       </Link>
-                       <Link href="/api/logout" prefetch={false} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] hover:text-[var(--color-danger)] transition-colors text-gray-400 rounded-b-lg border-t border-[var(--color-border)]">
-                           <LogOut className="w-4 h-4" /> Logout
-                       </Link>
-                   </div>
+                   <>
+                       <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
+                       <div className="absolute top-full right-0 mt-1 bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg shadow-xl min-w-40 z-50 overflow-hidden">
+                           <Link href="/dashboard/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] transition-colors text-[var(--color-foreground)]">
+                               <UserCircle className="w-4 h-4" /> Profile
+                           </Link>
+                           <Link href="/api/logout" prefetch={false} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[var(--color-input)] hover:text-[var(--color-danger)] transition-colors text-slate-700 border-t border-[var(--color-border)]">
+                               <LogOut className="w-4 h-4" /> Logout
+                           </Link>
+                       </div>
+                   </>
                )}
            </div>
        </div>

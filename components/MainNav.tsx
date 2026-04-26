@@ -38,7 +38,7 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
             </div>
             <div>
               <h2 className="text-xl font-bold tracking-widest text-[var(--color-primary)]">DIRA</h2>
-              <p className="text-[10px] text-gray-500 uppercase leading-none">MONEY SYSTEM</p>
+              <p className="text-[10px] text-slate-700 uppercase leading-none">MONEY SYSTEM</p>
             </div>
           </div>
           <div className="text-xs bg-[var(--color-primary)]/10 text-[var(--color-primary)] w-fit px-2 py-1 rounded">ROLE: {role}</div>
@@ -55,11 +55,11 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
                 className={`flex h-full ${mobile ? 'flex-col justify-center items-center text-center' : 'items-center px-4 py-3'} transition-colors group ${
                   isActive
                     ? (mobile ? 'text-[var(--color-primary)] relative' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-lg border-l-4 border-[var(--color-primary)]')
-                    : 'text-gray-400 hover:text-[var(--color-foreground)] hover:bg-[var(--color-card)] rounded-lg'
+                    : 'text-slate-700 hover:text-[var(--color-foreground)] hover:bg-[var(--color-card)] rounded-lg'
                 }`}
               >
                 {mobile && isActive && <div className="absolute top-0 w-8 h-[2px] bg-[var(--color-primary)] rounded-b-md" />}
-                <item.icon className={`${mobile ? 'h-5 w-5 mb-1' : 'h-5 w-5 mr-3'} ${isActive ? 'text-[var(--color-primary)]' : 'text-gray-500 group-hover:text-[var(--color-primary)] transition-colors'}`} />
+                <item.icon className={`${mobile ? 'h-5 w-5 mb-1' : 'h-5 w-5 mr-3'} ${isActive ? 'text-[var(--color-primary)]' : 'text-slate-600 group-hover:text-[var(--color-primary)] transition-colors'}`} />
                 <span className={`${mobile ? 'text-[10px] leading-tight' : 'text-sm font-medium'}`}>{item.name}</span>
               </Link>
             </li>
@@ -70,8 +70,8 @@ export default function MainNav({ role, mobile = false }: { role: string, mobile
 
       {!mobile && (
          <div className="mt-auto border-t border-[var(--color-border)] pt-4">
-            <Link href="/api/logout" prefetch={false} className="flex items-center px-4 py-3 text-sm font-medium text-gray-400 hover:bg-[var(--color-card)] hover:text-[var(--color-danger)] transition-colors group rounded-lg">
-                <LogOut className="h-5 w-5 mr-3 text-gray-500 group-hover:text-[var(--color-danger)] transition-colors" />
+            <Link href="/api/logout" prefetch={false} className="flex items-center px-4 py-3 text-sm font-medium text-slate-700 hover:bg-[var(--color-card)] hover:text-[var(--color-danger)] transition-colors group rounded-lg">
+                <LogOut className="h-5 w-5 mr-3 text-slate-600 group-hover:text-[var(--color-danger)] transition-colors" />
                 Logout
             </Link>
          </div>

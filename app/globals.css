@@ -1,33 +1,33 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-background: #0B0E1E;
-  --color-surface-raw: 11 14 30;
-  --color-foreground: #E0E7FF;
-  
-  --color-primary: #00E5FF;
-  --color-primary-foreground: #0B0E1E;
-  --color-primary-hover: #00CDE6;
-  
-  --color-accent: #A855F7;
+  --color-background: #F1F5F9;
+  --color-surface-raw: 241 245 249;
+  --color-foreground: #000000; /* Pure black text */
+
+  --color-primary: #0284C7; /* Deeper Cyan/Blue for contrast */
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-hover: #0369A1;
+
+  --color-accent: #7C3AED; /* Deeper Purple for contrast */
   --color-accent-foreground: #FFFFFF;
 
-  --color-blue: #007BFF;
+  --color-blue: #2563EB;
   --color-blue-foreground: #FFFFFF;
 
-  --color-card: rgba(var(--color-surface-raw), 0.7);
-  --color-card-solid: #0B0E1E;
-  --color-card-foreground: #E0E7FF;
-  
-  --color-popover: #0B0E1E;
-  --color-popover-foreground: #E0E7FF;
-  
-  --color-border: rgba(0, 123, 255, 0.3); /* Uses the strict blue */
-  --color-input: #111B3D;
-  
-  --color-success: #1DA85F;
-  --color-danger: #F43F5E;
-  --color-warning: #FBBF24;
+  --color-card: #FFFFFF;
+  --color-card-solid: #FFFFFF;
+  --color-card-foreground: #000000;
+
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #000000;
+
+  --color-border: #CBD5E1;
+  --color-input: #FFFFFF;
+
+  --color-success: #059669;
+  --color-danger: #DC2626;
+  --color-warning: #D97706;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
@@ -46,13 +46,16 @@
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--color-background);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #3A445C;
 }

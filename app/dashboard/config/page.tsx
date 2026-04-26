@@ -47,7 +47,7 @@ export default async function ConfigPage() {
                      <p className="text-[10px] text-[var(--color-primary)] tracking-widest mb-4 uppercase">Job Titles</p>
                      <div className="flex flex-wrap gap-2 mb-4">
                          {titlesRes.rows.map((t: any) => (
-                             <span key={t.id} className="bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-1 rounded text-xs text-gray-300">
+                             <span key={t.id} className="bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-1 rounded text-xs text-[var(--color-foreground)]">
                                  {t.title}
                              </span>
                          ))}
@@ -73,7 +73,7 @@ export default async function ConfigPage() {
                                 }`}>{log.action}</span>
                                 <span className="text-[9px] text-gray-500 font-mono">{new Date(log.created_at).toLocaleString()}</span>
                             </div>
-                            <p className="text-sm text-white mt-2">{log.details}</p>
+                            <p className="text-sm text-[var(--color-foreground)] mt-2">{log.details}</p>
                             <p className="text-[10px] text-gray-500 mt-1">By: {log.actor_name} ({log.actor_email})</p>
                          </div>
                      ))}

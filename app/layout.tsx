@@ -17,7 +17,7 @@ export default function RootLayout({
       <body className={`font-sans min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] antialiased`}>
         {children}
         <Toaster 
-           theme="dark" 
+           theme="light" 
            position="bottom-right" 
            toastOptions={{
              style: {

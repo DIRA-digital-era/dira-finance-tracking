@@ -11,9 +11,9 @@ export function PasswordEyeToggle() {
               type={show ? 'text' : 'password'}
               required
               placeholder="Security Key (Password)"
-              className="block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-input)] py-3 pl-10 pr-10 text-white placeholder-gray-400 focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] transition-all" 
+              className="block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-input)] py-3 pl-10 pr-10 text-[var(--color-foreground)] placeholder-slate-500 focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] transition-all" 
             />
-            <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition">
+            <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-[var(--color-foreground)] transition">
                {show ? <EyeOff className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}
             </button>
         </div>
