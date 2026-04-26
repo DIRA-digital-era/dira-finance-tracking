@@ -48,7 +48,8 @@ export default function RequestRow({ request, mobile = false, isSuperAdmin = fal
              </div>
              <p className="font-mono font-bold tracking-widest">{parseFloat(request.amount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF</p>
           </div>
-          <p className="text-xs text-slate-800">{request.title}</p>
+          <p className="text-xs font-semibold text-[var(--color-foreground)]">{request.title}</p>
+          {request.description && <p className="text-xs text-[var(--color-foreground)] mt-1">{request.description}</p>}
           {receipts.length > 0 && <ImageLightbox urls={receipts} />}
           {isPending ? (
             <div className="flex gap-2">
@@ -85,7 +86,8 @@ export default function RequestRow({ request, mobile = false, isSuperAdmin = fal
           {parseFloat(request.amount).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} XAF
        </td>
        <td className="px-6 py-4">
-          <div className="bg-[var(--color-input)]/50 rounded p-2 text-xs text-slate-800 mb-2">{request.title}</div>
+          <div className="bg-[var(--color-input)]/50 rounded p-2 text-xs font-semibold text-[var(--color-foreground)] mb-2">{request.title}</div>
+          {request.description && <div className="bg-[var(--color-input)]/50 rounded p-2 text-xs text-[var(--color-foreground)] mb-2">{request.description}</div>}
           {receipts.length > 0 && <ImageLightbox urls={receipts} />}
        </td>
        <td className="px-6 py-4 text-[10px] text-slate-700 font-mono">
