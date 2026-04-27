@@ -86,12 +86,12 @@ export default async function DashboardOverview() {
              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition">
                 <Fingerprint className="w-24 h-24 text-[var(--color-primary)]" />
              </div>
-             <p className="text-[10px] text-slate-700 tracking-widest flex justify-between uppercase relative z-10">Employee Identity <span className="bg-[var(--color-accent)]/20 text-[var(--color-accent)] px-1 rounded">LVL {session?.role === 'SUPER_ADMIN' ? 'MAX' : (session?.role === 'ADMIN' ? '2' : '1')}</span></p>
-             <h3 className="text-xl font-bold mt-2 text-[var(--color-foreground)] relative z-10">{session.name}</h3>
-             <p className="text-xs text-[var(--color-primary)] relative z-10 mb-4">{session.role}</p>
+             <p className="text-[10px] text-slate-700 tracking-widest flex justify-between uppercase relative z-2">Employee Identity <span className="bg-[var(--color-accent)]/20 text-[var(--color-accent)] px-1 rounded">LVL {session?.role === 'SUPER_ADMIN' ? 'MAX' : (session?.role === 'ADMIN' ? '2' : '1')}</span></p>
+             <h3 className="text-xl font-bold mt-2 text-[var(--color-foreground)] relative z-2">{session.name}</h3>
+             <p className="text-xs text-[var(--color-primary)] relative z-2 mb-4">{session.role}</p>
              
              {/* Job titles display */}
-             <div className="flex flex-wrap gap-1 relative z-10">
+             <div className="flex flex-wrap gap-1 relative z-2">
                  {titles.length === 0 && <span className="text-[9px] text-slate-500 italic">No generic titles assigned</span>}
                  {titles.map((t: string, i: number) => (
                     <span key={i} className="text-[9px] bg-[var(--color-input)]/80 text-slate-700 px-2 py-1 border border-[var(--color-border)] rounded">{t}</span>
@@ -100,7 +100,7 @@ export default async function DashboardOverview() {
           </div>
           
           {/* Total expenditure card */}
-          <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg relative z-10 overflow-hidden">
+          <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg relative z-2 overflow-hidden">
              <div className="absolute -right-8 -bottom-8 opacity-5">
                 <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
@@ -149,7 +149,7 @@ export default async function DashboardOverview() {
        <RecentSubmissions records={records} />
 
        {/* Mobile floating action button for new requests */}
-       <Link href="/dashboard/new-request" className="md:hidden fixed bottom-20 right-4 bg-[var(--color-primary)] text-[var(--color-primary-foreground)] rounded-full p-4 shadow-lg hover:shadow-[0_0_15px_rgba(0,229,255,0.5)] transition z-40">
+       <Link href="/dashboard/new-request" className="md:hidden fixed bottom-20 right-4 bg-[var(--color-primary)] text-[var(--color-primary-foreground)] rounded-full p-4 shadow-lg hover:shadow-[0_0_15px_rgba(0,229,255,0.5)] transition 2">
            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
        </Link>
     </div>
