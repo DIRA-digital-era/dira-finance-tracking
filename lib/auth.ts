@@ -2,9 +2,11 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+// JWT secret key for signing and verifying tokens
 const secretKey = process.env.JWT_SECRET || 'super_secret_dira_jwt_key_2026';
 const key = new TextEncoder().encode(secretKey);
 
+// Encrypt payload into JWT token
 export async function encrypt(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
@@ -13,6 +15,7 @@ export async function encrypt(payload: any) {
     .sign(key);
 }
 
+// Decrypt and verify JWT token
 export async function decrypt(input: string): Promise<any> {
   try {
     const { payload } = await jwtVerify(input, key, { algorithms: ['HS256'] });
@@ -23,6 +26,7 @@ export async function decrypt(input: string): Promise<any> {
   }
 }
 
+// Retrieve current user session from cookies
 export async function getSession() {
   const cookieStore = await cookies();
   const session = cookieStore.get('dira_session')?.value;
@@ -30,6 +34,7 @@ export async function getSession() {
   return await decrypt(session);
 }
 
+// Create and set session cookie for authenticated user
 export async function setSession(userId: number, role: string, name: string, email: string) {
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const session = await encrypt({ user_id: userId, email, role, name, expires });
@@ -41,11 +46,13 @@ export async function setSession(userId: number, role: string, name: string, ema
   cookieStore.set('dira_session', session, { expires, httpOnly: true, path: '/', sameSite: 'lax', secure: isSecure });
 }
 
+// Clear session cookie on logout
 export async function clearSession() {
   const cookieStore = await cookies();
   cookieStore.delete('dira_session');
 }
 
+// Update session in request object (middleware utility)
 export async function updateSession(request: NextRequest) {
   const session = request.cookies.get('dira_session')?.value;
   if (!session) return;

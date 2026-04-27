@@ -8,10 +8,12 @@ import { playSuccessSound, playErrorSound } from '@/lib/audio';
 import { User, Lock, ArrowRight } from 'lucide-react';
 import { PasswordEyeToggle } from '@/components/PasswordEyeToggle';
 
+// Login page component for user authentication
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
+  // Handle form submission for login
   async function handleLogin(formData: FormData) {
     setLoading(true);
     const res = await loginAction(formData);
@@ -20,8 +22,9 @@ export default function Login() {
       playSuccessSound();
       toast.success(res.message);
 
+      // Redirect all users to dashboard (role-based features handled there)
       if (res.role === 'ADMIN' || res.role === 'SUPER_ADMIN') {
-        router.push('/dashboard'); // Both go to dashboard for now
+        router.push('/dashboard');
       } else {
         router.push('/dashboard');
       }
@@ -33,14 +36,18 @@ export default function Login() {
   }
 
   return (
+    // Full screen login layout with background effects
     <div className="flex min-h-screen items-center justify-center p-4 relative overflow-hidden bg-[var(--color-background)]">
 
-      {/* Background Tech Details */}
+      {/* Subtle background gradient overlay */}
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, var(--color-primary) 0%, transparent 40%)' }} />
+      {/* Top accent line */}
       <div className="absolute top-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-20" />
 
+      {/* Login form container */}
       <div className="relative z-10 w-full max-w-md rounded-xl bg-[var(--color-card)] p-8 border border-[var(--color-border)] shadow-2xl">
 
+        {/* Logo and branding section */}
         <div className="mb-8 flex flex-col items-center">
           <div className="relative w-20 h-20 rounded-full overflow-hidden mb-4 border-2 border-[var(--color-primary)] shadow-[0_0_20px_rgba(0,229,255,0.3)] bg-[var(--color-input)] flex items-center justify-center">
             <img src="/logo.jpg" alt="DIRA Logo" className="w-full h-full object-cover" />

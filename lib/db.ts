@@ -1,10 +1,12 @@
 import { Pool } from 'pg';
 import bcrypt from 'bcryptjs';
 
+// PostgreSQL connection pool for database operations
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/postgres',
 });
 
+// Execute SQL query with optional parameters and logging
 export async function query(text: string, params?: any[]) {
   const start = Date.now();
   const res = await pool.query(text, params);
@@ -13,11 +15,13 @@ export async function query(text: string, params?: any[]) {
   return res;
 }
 
+// Initialize database schema and tables
 export async function initDb() {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
     
+    // Create users table for authentication and user management
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -31,6 +35,7 @@ export async function initDb() {
       );
     `);
 
+    // Create records table for financial transactions
     await client.query(`
       CREATE TABLE IF NOT EXISTS records (
         id SERIAL PRIMARY KEY,
@@ -44,6 +49,7 @@ export async function initDb() {
       );
     `);
 
+    // Create receipts table for file attachments
     await client.query(`
       CREATE TABLE IF NOT EXISTS receipts (
         id SERIAL PRIMARY KEY,
