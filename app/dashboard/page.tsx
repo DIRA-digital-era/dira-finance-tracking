@@ -93,8 +93,8 @@ export default async function DashboardOverview() {
              {/* Job titles display */}
              <div className="flex flex-wrap gap-1 relative z-2">
                  {titles.length === 0 && <span className="text-[9px] text-slate-500 italic">No generic titles assigned</span>}
-                 {titles.map((t: string, i: number) => (
-                    <span key={i} className="text-[9px] bg-[var(--color-input)]/80 text-slate-700 px-2 py-1 border border-[var(--color-border)] rounded">{t}</span>
+                 {titles.map((title: string, titleIndex: number) => (
+                    <span key={titleIndex} className="text-[9px] bg-[var(--color-input)]/80 text-slate-700 px-2 py-1 border border-[var(--color-border)] rounded">{title}</span>
                  ))}
              </div>
           </div>

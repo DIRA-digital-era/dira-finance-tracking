@@ -66,8 +66,8 @@ export default function DispatchFundsModal({ users }: { users: { id: number, nam
                   className="w-full bg-[var(--color-input)] border border-[var(--color-border)] rounded py-3 px-3 text-[var(--color-foreground)] focus:outline-none focus:border-[var(--color-accent)] appearance-none"
                 >
                   <option value="">Choose staff member...</option>
-                  {eligibleRecipients.map(u => (
-                    <option key={u.id} value={u.id}>{u.name} — {u.email} ({u.role})</option>
+                  {eligibleRecipients.map(user => (
+                    <option key={user.id} value={user.id}>{user.name} — {user.email} ({user.role})</option>
                   ))}
                 </select>
               </div>

@@ -46,9 +46,9 @@ export default async function ConfigPage() {
                  <div className="bg-[var(--color-card)] rounded-xl p-6 border border-[var(--color-border)] shadow-lg">
                      <p className="text-[10px] text-[var(--color-primary)] tracking-widest mb-4 uppercase">Job Titles</p>
                      <div className="flex flex-wrap gap-2 mb-4">
-                         {titlesRes.rows.map((t: any) => (
-                             <span key={t.id} className="bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-1 rounded text-xs text-[var(--color-foreground)]">
-                                 {t.title}
+                         {titlesRes.rows.map((titleRow: any) => (
+                             <span key={titleRow.id} className="bg-[var(--color-input)] border border-[var(--color-border)] px-3 py-1 rounded text-xs text-[var(--color-foreground)]">
+                                 {titleRow.title}
                              </span>
                          ))}
                      </div>

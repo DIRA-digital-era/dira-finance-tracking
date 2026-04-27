@@ -95,10 +95,10 @@ export default function AddUserForm({ currentRole, jobTitles }: { currentRole: s
                  <label className="block text-xs font-bold text-slate-700 mb-2 tracking-wider uppercase">Professional Titles (Optional)</label>
                  <div className="bg-[var(--color-input)] border border-[var(--color-border)] rounded p-4 grid grid-cols-2 gap-2 text-sm text-slate-800">
                      {jobTitles.length === 0 ? <p className="text-xs text-slate-600 italic">No job titles configured in system.</p> : null}
-                     {jobTitles.map(jt => (
-                         <label key={jt.id} className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-foreground)] transition">
-                            <input type="checkbox" name="titles" value={jt.id} className="w-4 h-4 accent-[var(--color-primary)]" />
-                            {jt.title}
+                     {jobTitles.map(jobTitle => (
+                         <label key={jobTitle.id} className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-foreground)] transition">
+                            <input type="checkbox" name="titles" value={jobTitle.id} className="w-4 h-4 accent-[var(--color-primary)]" />
+                            {jobTitle.title}
                          </label>
                      ))}
                  </div>

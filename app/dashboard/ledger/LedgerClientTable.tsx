@@ -96,16 +96,16 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
                  <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto">
                    {filtered.length === 0 ? (
                      <p className="text-slate-700 text-sm col-span-full text-center py-8">No records found.</p>
-                   ) : filtered.map((r) => (
-                     <div key={r.id} className="bg-[var(--color-input)]/40 border border-[var(--color-border)] rounded-xl p-4 hover:border-[var(--color-primary)]/40 transition-colors">
+                   ) : filtered.map((record) => (
+                     <div key={record.id} className="bg-[var(--color-input)]/40 border border-[var(--color-border)] rounded-xl p-4 hover:border-[var(--color-primary)]/40 transition-colors">
                        <div className="flex justify-between items-start mb-2">
-                         <span className={`text-[9px] font-bold tracking-widest px-2 py-0.5 rounded ${r.type === 'INCOME' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>{r.type}</span>
-                         <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${STATUS_STYLES[r.status] || STATUS_STYLES.PENDING}`}>{r.status}</span>
+                         <span className={`text-[9px] font-bold tracking-widest px-2 py-0.5 rounded ${record.type === 'INCOME' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>{record.type}</span>
+                         <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${STATUS_STYLES[record.status] || STATUS_STYLES.PENDING}`}>{record.status}</span>
                        </div>
-                       <p className="font-bold text-[var(--color-foreground)] text-sm mb-1 truncate">{r.title}</p>
-                       {r.user_name && r.type === 'EXPENSE' && <p className="text-[10px] text-[var(--color-primary)] font-mono truncate">{r.user_name}</p>}
-                       <p className="text-sm font-mono font-bold mt-2 text-[var(--color-foreground)]">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0})} XAF</p>
-                       <p className="text-[9px] text-slate-700 font-mono mt-2">{new Date(r.created_at).toLocaleString()}</p>
+                       <p className="font-bold text-[var(--color-foreground)] text-sm mb-1 truncate">{record.title}</p>
+                       {record.user_name && record.type === 'EXPENSE' && <p className="text-[10px] text-[var(--color-primary)] font-mono truncate">{record.user_name}</p>}
+                       <p className="text-sm font-mono font-bold mt-2 text-[var(--color-foreground)]">{parseFloat(record.amount).toLocaleString('en-US', {minimumFractionDigits: 0})} XAF</p>
+                       <p className="text-[9px] text-slate-700 font-mono mt-2">{new Date(record.created_at).toLocaleString()}</p>
                      </div>
                    ))}
                  </div>
@@ -128,32 +128,32 @@ export default function LedgerClientTable({ records }: { records: any[] }) {
                          {filtered.length === 0 ? (
                            <tr><td colSpan={7} className="px-6 py-8 text-center text-slate-700">No records found.</td></tr>
                          ) : (
-                           filtered.map((r) => (
-                               <tr key={r.id} className="hover:bg-[var(--color-input)] transition-colors">
-                                 <td className="px-6 py-4 font-mono text-[10px] text-slate-700">#TRX-{2000 + r.id}</td>
+                           filtered.map((record) => (
+                               <tr key={record.id} className="hover:bg-[var(--color-input)] transition-colors">
+                                 <td className="px-6 py-4 font-mono text-[10px] text-slate-700">#TRX-{2000 + record.id}</td>
                                  <td className="px-4 py-4">
-                                     <span className={`text-[10px] font-bold tracking-widest px-2 py-0.5 rounded ${r.type === 'INCOME' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
-                                        {r.type}
+                                     <span className={`text-[10px] font-bold tracking-widest px-2 py-0.5 rounded ${record.type === 'INCOME' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                                        {record.type}
                                      </span>
                                  </td>
                                  <td className="px-6 py-4 text-[var(--color-foreground)] font-medium">
-                                     {r.title}
-                                     <span className="block text-[10px] text-slate-700 truncate mt-1 max-w-[160px]">{r.description}</span>
+                                     {record.title}
+                                     <span className="block text-[10px] text-slate-700 truncate mt-1 max-w-[160px]">{record.description}</span>
                                  </td>
                                  <td className="px-4 py-4 hidden md:table-cell">
-                                     {r.type === 'INCOME' ? (
+                                     {record.type === 'INCOME' ? (
                                         <span className="text-[10px] text-slate-700 font-mono">External / Director</span>
                                      ) : (
                                         <div>
-                                           <span className="block font-bold text-slate-800 text-xs">{r.user_name}</span>
-                                           <span className="block text-[10px] text-[var(--color-primary)] font-mono">{r.user_email}</span>
+                                           <span className="block font-bold text-slate-800 text-xs">{record.user_name}</span>
+                                           <span className="block text-[10px] text-[var(--color-primary)] font-mono">{record.user_email}</span>
                                         </div>
                                      )}
                                  </td>
-                                 <td className="px-6 py-4 text-[10px] text-slate-700 font-mono hidden lg:table-cell">{new Date(r.created_at).toLocaleString()}</td>
-                                 <td className="px-6 py-4 font-mono font-bold text-[var(--color-foreground)]">{parseFloat(r.amount).toLocaleString('en-US', {minimumFractionDigits: 0})} XAF</td>
+                                 <td className="px-6 py-4 text-[10px] text-slate-700 font-mono hidden lg:table-cell">{new Date(record.created_at).toLocaleString()}</td>
+                                 <td className="px-6 py-4 font-mono font-bold text-[var(--color-foreground)]">{parseFloat(record.amount).toLocaleString('en-US', {minimumFractionDigits: 0})} XAF</td>
                                  <td className="px-6 py-4">
-                                    <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${STATUS_STYLES[r.status] || STATUS_STYLES.PENDING}`}>{r.status}</span>
+                                    <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${STATUS_STYLES[record.status] || STATUS_STYLES.PENDING}`}>{record.status}</span>
                                  </td>
                               </tr>
                            ))

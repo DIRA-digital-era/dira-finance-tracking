@@ -9,19 +9,19 @@ export default function ImageLightbox({ urls }: { urls: string[] }) {
 
     if (!urls || urls.length === 0) return null;
 
-    const prev = () => setIndex(i => (i - 1 + urls.length) % urls.length);
-    const next = () => setIndex(i => (i + 1) % urls.length);
+    const prev = () => setIndex(currentIndex => (currentIndex - 1 + urls.length) % urls.length);
+    const next = () => setIndex(currentIndex => (currentIndex + 1) % urls.length);
 
     return (
         <>
             <div className="flex flex-wrap gap-2 mt-2">
-                {urls.map((url, i) => (
+                {urls.map((url, imageIndex) => (
                     <button
-                        key={i}
-                        onClick={() => { setIndex(i); setOpen(true); }}
+                        key={imageIndex}
+                        onClick={() => { setIndex(imageIndex); setOpen(true); }}
                         className="w-14 h-14 rounded overflow-hidden border border-[var(--color-accent)]/30 hover:border-[var(--color-accent)] transition"
                     >
-                        <img src={url} alt={`Receipt ${i + 1}`} className="w-full h-full object-cover" />
+                        <img src={url} alt={`Receipt ${imageIndex + 1}`} className="w-full h-full object-cover" />
                     </button>
                 ))}
             </div>
