@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginAction } from './actions';
 import { toast } from 'sonner';
@@ -14,26 +14,28 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   // Handle form submission for login
-  async function handleLogin(formData: FormData) {
-    setLoading(true);
-    const res = await loginAction(formData);
-    if (res.success) {
-      setLoading(false)
-      playSuccessSound();
-      toast.success(res.message);
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
 
-      // Redirect all users to dashboard (role-based features handled there)
-      if (res.role === 'ADMIN' || res.role === 'SUPER_ADMIN') {
+    setLoading(true);
+    try {
+      const res = await loginAction(formData);
+      if (res.success) {
+        playSuccessSound();
+        toast.success(res.message);
         router.push('/dashboard');
       } else {
-        router.push('/dashboard');
+        playErrorSound();
+        toast.error(res.message);
       }
-    } else {
+    } catch (error) {
+      console.error('Login error:', error);
       playErrorSound();
-      toast.error(res.message);
+      toast.error('Login failed. Please try again.');
+    } finally {
       setLoading(false);
     }
-
   }
 
   return (
@@ -58,7 +60,7 @@ export default function Login() {
           <p className="mt-2 text-sm text-[var(--color-foreground)] opacity-70">STAFF ONLY</p>
         </div>
 
-        <form action={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-4">
             <div className="relative">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -85,7 +87,9 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="group relative flex w-full justify-center rounded-md border border-transparent bg-[var(--color-primary)] py-3 px-4 text-sm font-semibold text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-card)] transition-all overflow-hidden disabled:opacity-50"
+            aria-busy={loading}
+            aria-disabled={loading}
+            className="group relative flex w-full justify-center rounded-md border border-transparent bg-[var(--color-primary)] py-3 px-4 text-sm font-semibold text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-card)] transition-all overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
               {
