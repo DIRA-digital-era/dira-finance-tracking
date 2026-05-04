@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { loginAction } from './actions';
 import { toast } from 'sonner';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
-import { User, Lock, ArrowRight } from 'lucide-react';
+import { User, Lock, ArrowRight, LoaderCircleIcon } from 'lucide-react';
 import { PasswordEyeToggle } from '@/components/PasswordEyeToggle';
 
 // Login page component for user authentication
@@ -17,8 +17,8 @@ export default function Login() {
   async function handleLogin(formData: FormData) {
     setLoading(true);
     const res = await loginAction(formData);
-
     if (res.success) {
+      setLoading(false)
       playSuccessSound();
       toast.success(res.message);
 
@@ -33,6 +33,7 @@ export default function Login() {
       toast.error(res.message);
       setLoading(false);
     }
+
   }
 
   return (
@@ -87,7 +88,12 @@ export default function Login() {
             className="group relative flex w-full justify-center rounded-md border border-transparent bg-[var(--color-primary)] py-3 px-4 text-sm font-semibold text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-card)] transition-all overflow-hidden disabled:opacity-50"
           >
             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <Lock className="h-5 w-5 text-[var(--color-primary-foreground)] opacity-70 group-hover:opacity-100 transition-opacity" />
+              {
+                loading ?
+                 <LoaderCircleIcon className="h-5 w-5 text-[var(--color-primary-foreground)] opacity-70 group-hover:opacity-100 transition-opacity animate-spin" />
+                :
+                <Lock className="h-5 w-5 text-[var(--color-primary-foreground)] opacity-70 group-hover:opacity-100 transition-opacity" />
+              }
             </span>
             {loading ? 'LOGGING IN...' : 'LOGIN'}
             <ArrowRight className="absolute right-4 h-5 w-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
